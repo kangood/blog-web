@@ -6,18 +6,16 @@ const siteMetadata = {
   description: '探索技术、热爱生活',
   language: 'zh-cn',
   theme: 'dark', // system, dark or light
-  siteUrl: 'https://prabhukirankonda.vercel.app', // TODO
-  siteRepo: 'https://github.com/KangodYan/prabhukirankonda', // TODO
+  siteUrl: 'https://kangod.top', // TODO
+  siteRepo: 'https://github.com/KangodYan', // TODO
   siteLogo: '/static/images/logo.png', // TODO
   socialBanner: '/static/images/twitter-card.png', // TODO: 没用到
   email: 'kangod.yan@gmail.com',
   github: 'https://github.com/KangodYan',
   twitter: 'https://twitter.com/KangodYan',
-  linkedin: 'https://www.linkedin.com/in/prabhukirankonda', // TODO
   locale: 'zh-CN',
   socialLinks: {
     github: 'https://www.github.com/KangodYan',
-    linkedin: 'https://www.linkedin.com/in/prabhukirankonda', // TODO
     twitter: 'https://twitter.com/KangodYan',
     mail: 'mailto:kangod.yan@gmail.com',
   },

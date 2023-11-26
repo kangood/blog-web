@@ -2,7 +2,6 @@ import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from 'pliny/utils/formatDate'
-import NewsletterForm from 'pliny/ui/NewsletterForm'
 import Image from 'next/image'
 
 const MAX_DISPLAY = 5
@@ -16,7 +15,7 @@ export default function Home({ posts }) {
             <span className="wave">👋🏻</span>, <span>我是 </span>
             <span className="text-sky-500 dark:text-teal-400">Kangod Yan</span>
           </h1>
-          <p>欢迎来到我的部落格 —— 在这里我会分享我所热爱的一切</p>
+          <p>欢迎来到我的 Blog，在这里我会分享我所热爱的一切</p>
           <Link
             href="/about"
             className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 text-white font-bold py-2 px-4 rounded mt-4 inline-block"
@@ -105,9 +104,9 @@ export default function Home({ posts }) {
           <Link
             href="/blog"
             className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-            aria-label="All posts"
+            aria-label="全部文章"
           >
-            All Posts &rarr;
+            全部文章 &rarr;
           </Link>
         </div>
       )}
