@@ -18,6 +18,11 @@ export type TechStack =
   | 'Git'
   | 'Prisma'
   | 'Drizzle'
+  | 'TailwindCSS'
+  | 'ShadcnUI'
+  | 'Vite'
+  | 'AntDesign'
+  | 'TanstackQuery'
 
 export const techStack: TechStack[] = [
   'Python',
@@ -39,4 +44,9 @@ export const techStack: TechStack[] = [
   'Git',
   'Prisma',
   'Drizzle',
+  'TailwindCSS',
+  'ShadcnUI',
+  'Vite',
+  'AntDesign',
+  'TanstackQuery',
 ]

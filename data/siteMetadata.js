@@ -6,8 +6,8 @@ const siteMetadata = {
   description: '探索技术、热爱生活',
   language: 'zh-cn',
   theme: 'dark', // system, dark or light
-  siteUrl: 'https://kangod.top', // TODO
-  siteRepo: 'https://github.com/KangodYan', // TODO
+  siteUrl: 'https://kangod.top',
+  siteRepo: 'https://github.com/KangodYan',
   siteLogo: '/static/images/logo.png', // TODO
   socialBanner: '/static/images/twitter-card.png', // TODO: 没用到
   email: 'kangod.yan@gmail.com',

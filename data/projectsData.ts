@@ -13,8 +13,7 @@ const projectsData: ProjectDataProps[] = [
     description: '由对SEO友好的NextJS，搭建官网',
     href: 'https://tealamp.panlore.top',
     imgSrc: '/static/images/tealamp-web-ex.png',
-    // , 'TailwindCSS', 'ShadcnUI'
-    techStack: ['NextJS', 'React', 'TypeScript'],
+    techStack: ['NextJS', 'React', 'TypeScript', 'TailwindCSS', 'ShadcnUI'],
   },
   {
     title: '茶灯项目 admin 后台网站',
