@@ -20,8 +20,7 @@ const projectsData: ProjectDataProps[] = [
     description: '带权限管理的React后台项目',
     href: 'https://lamp.panlore.top',
     imgSrc: '/static/images/tealamp-admin-ex.png',
-    // , 'Vite', 'TailwindCSS', 'AntDesign', 'TanstackQuery'
-    techStack: ['React', 'TypeScript'],
+    techStack: ['React', 'TypeScript', 'Vite', 'TailwindCSS', 'AntDesign', 'TanStackQuery'],
   },
 ]
 
