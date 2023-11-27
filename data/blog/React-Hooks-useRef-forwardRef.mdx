@@ -1,0 +1,351 @@
+---
+title: 'React Hooks：useRef & forwardRef'
+summary: '我从未真正理解什么时候应该使用 React 的 useRef 钩子，它感觉与 useState 比较像，但这两者都有自己最适合使用的场景。我之前也没理解清楚何时应该使用 forwardRef，我将解释这两个钩子以及何时应该使用它们。'
+date: '2023-11-26'
+draft: false
+tags: ['React', 'Hooks']
+authors: ['kangod']
+layout: PostSimple
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+我从未真正理解什么时候应该使用 React 的 useRef 钩子，它感觉与 useState 比较像，但这两者都有自己最适合使用的场景。我之前也没理解清楚何时应该使用 forwardRef，我将解释这两个钩子以及何时应该使用它们。
+
+# 超越基本的 React Hooks
+
+使用 React 的开发者应该都会基本的 hooks，比如 `useState`、`useEffect` 和 `useRef`。但随着我对 React 的使用越来越多，我发现还有许多其他的 hooks。以下是一些我发现很有用的更高级的 hooks。
+
+## useRef
+
+当你想要 “记住” 一个值，但不希望该值触发重新渲染时，可以使用 `useRef` 钩子。在你想要存储一个不想更改的值，但又不想将它存储在状态中时，这是很有用的。
+
+包括以下:
+
+- 对 DOM 节点的引用
+  - 使用 `const inputRef = useRef()` 和 `inputRef.current.focus()`
+- 对组件实例的引用
+  - 使用 `const componentRef = useRef()` 和 `componentRef.current.someMethod()`
+
+### 使用 useRef 存储值
+
+- import `useRef` from react
+
+- 在组件内调用 `useRef` 并传入初始值
+
+```jsx
+import { useRef } from 'react'
+
+export default function App() {
+  const ref = useRef(0)
+
+  console.log(ref.current) // 返回 0
+
+  return <div className="App">{ref.current}</div>
+}
+```
+
+- 可以通过调用 `ref.current` 来访问 ref 的当前值
+- 当前值是有意**可变**的，可以通过为其赋值来改变它
+  - 可以对它进行读写，但不会触发重新渲染
+
+```jsx
+import { useRef } from 'react'
+
+export default function App() {
+  const ref = useRef(0)
+
+  console.log(ref.current) // 返回 0
+
+  ref.current = 1
+
+  console.log(ref.current) // 返回 1
+
+  ref.current++ // 返回 2
+
+  return <div className="App">{ref.current}</div>
+}
+```
+
+与 state 不同，ref 是一个包含 `current` 属性的普通 JavaScript 对象，可以在其中添加任何属性。
+
+```jsx
+import { useRef } from 'react'
+
+export default function App() {
+  const ref = useRef(0)
+
+  ref.current = 1
+
+  ref.current++ // 返回 2
+
+  ref.current = 'hello' // 返回 'hello'
+
+  ref.current = { name: 'John' }
+
+  return <div className="App">{ref.current.name}</div>
+}
+```
+
+当一条信息用于渲染时，保持其状态。当事件处理程序仅需要一条信息，并且更改它不需要重新渲染时，使用 ref 可能会更有效。
+
+### Ref vs State
+
+| ref                                                 | state                                                                |
+| --------------------------------------------------- | -------------------------------------------------------------------- |
+| `useRef(initialVal)` return `{current: initialVal}` | `useState(initialVal)` return `[currentVal, setVal]`                 |
+| 不会触发重新渲染                                    | 更改时触发重新渲染                                                   |
+| 可变的，即可以在渲染过程之外修改和更新 `current` 值 | 不可变，也就是说只能通过 `setVal` 来更新，出现这种情况时，将重新渲染 |
+| 不应在渲染过程中读取或写入 `current` 值             | 可以随时读取状态，但是每次渲染都有自己的状态快照，不会改变           |
+
+`useRef` 可以被认为是 `useState` 的一种特定风格。 举个例子：
+
+```jsx
+function useRef(initialValue) {
+  const [ref, unused] = useState({ current: initialValue })
+  return ref
+}
+```
+
+在第一次渲染期间，`useRef` 返回 `{current:initialValue}`，这与 `useState({current:initialValue})` 相同。 但是当更改 `current` 的值时，`useState` 将触发重新渲染， `useRef` 则不会重新渲染。
+
+### useRef 的例子
+
+```jsx
+import { useState, useRef } from 'react'
+
+export default function App() {
+  const [text, setText] = useState('')
+  const [isSending, setIsSending] = useState(false)
+  const timeoutRef = useRef(null)
+
+  function handleSend() {
+    setIsSending(true)
+    timeoutRef.current = setTimeout(() => {
+      alert('Sent!')
+      setIsSending(false)
+    }, 3000)
+  }
+
+  function handleUndo() {
+    setIsSending(false)
+    clearTimeout(timeoutRef.current)
+  }
+
+  return (
+    <>
+      <input disabled={isSending} value={text} onChange={(e) => setText(e.target.value)} />
+      <button disabled={isSending} onClick={handleSend}>
+        {isSending ? 'Sending...' : 'Send'}
+      </button>
+      {isSending && <button onClick={handleUndo}>Undo</button>}
+    </>
+  )
+}
+```
+
+以上是模拟了一个简单的异步操作，可以看出 `useRef` 和 `useState` 的细致差别
+
+### 用 useRef 保存 DOM 节点
+
+有时可能需要直接访问 DOM 节点。比如，在页面加载时聚焦 input 元素，或者想测量元素的大小。 可以使用 `useRef` hook 来存储对 DOM 节点的引用。
+
+#### 获取 DOM 节点的引用
+
+```jsx
+import { useRef } from 'react'
+
+export default function Form() {
+  // 创建一个 ref
+  const inputRef = useRef(null)
+
+  // 在页面加载时聚焦 input 元素
+  function handleClick() {
+    inputRef.current.focus()
+  }
+
+  return (
+    <>
+      {/* 获取 input 元素的引用 */}
+      <input ref={inputRef} />
+
+      {/* 用按钮被点击时，聚焦在输入框上 */}
+      <button onClick={handleClick}>Focus the input</button>
+    </>
+  )
+}
+```
+
+#### 使用 ref 的 callback 管理 ref 列表
+
+有时候可能需要对列表中的每个项目进行引用，但不知道会有多少个，像这样的话是行不通的：
+
+```jsx
+<ul>
+  {items.map((item) => {
+    const ref = useRef(null)
+    return <li ref={ref} />
+  })}
+</ul>
+```
+
+> 不能在循环条件或 `map` 调用中调用 `useRef`
+
+最好的解决方案是将函数传递给 `ref` 属性，这叫做引用回调。 该函数将使用 DOM 节点作为参数来调用，这样可以将节点存储在 ref 对象中。
+
+这允许维护自己的引用数组，并且可以后面再访问它们，还可以创建一个新的 `Map` 对象来存储引用。
+
+```jsx
+import { useRef } from 'react'
+
+export default function CatFriends() {
+  // 创建一个 ref 对象
+  const itemsRef = useRef(null)
+
+  function scrollToId(itemId) {
+    const map = getMap()
+    const node = map.get(itemId)
+    node.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'center',
+    })
+  }
+
+  function getMap() {
+    if (!itemsRef.current) {
+      // 首次使用时初始化 Map
+      itemsRef.current = new Map()
+    }
+    return itemsRef.current
+  }
+
+  return (
+    <>
+      <nav>
+        <button onClick={() => scrollToId(0)}>小黄</button>
+        <button onClick={() => scrollToId(5)}>小花</button>
+        <button onClick={() => scrollToId(9)}>小黑</button>
+      </nav>
+      <div>
+        <ul>
+          {catList.map((cat) => (
+            <li
+              key={cat.id}
+              ref={(node) => {
+                const map = getMap()
+                if (node) {
+                  map.set(cat.id, node)
+                } else {
+                  map.delete(cat.id)
+                }
+              }}
+            >
+              <img src={cat.imageUrl} alt={'Cat #' + cat.id} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
+  )
+}
+
+const catList = []
+for (let i = 0; i < 10; i++) {
+  catList.push({
+    id: i,
+    imageUrl: 'https://placekitten.com/250/200?image=' + i,
+  })
+}
+```
+
+## forwardRef
+
+如果在自己的组件上放置 `ref`，则引用的值将是 `undefined`，这是因为 ref 作为属性传递给组件，而组件不会将其转发到 DOM 节点。
+
+比如，以下代码将不起作用：
+
+```jsx
+import { useRef } from 'react'
+
+// 自己创建的组件
+function MyInput(props) {
+  return <input {...props} />
+}
+
+export default function MyForm() {
+  // 在另一个组件中创建 ref 对象
+  const inputRef = useRef(null)
+
+  function handleClick() {
+    inputRef.current.focus()
+  }
+
+  return (
+    <>
+      {/* 将 ref 对象传递给自己的组件 */}
+      <input ref={inputRef} />
+      <button onClick={handleClick}>Focus the input</button>
+    </>
+  )
+}
+```
+
+> `ref` 属性不会转发到 DOM 节点，当单击该按钮时，输入会得不到焦点。
+
+发生这种情况是因为默认情况下 React 不允许组件访问其他组件的 DOM 节点，就是当前组件的子组件也不行。
+
+解决方案：使用 `forwardRef` 将 ref 传递给DOM节点。
+
+与其相反的是，想要暴露 DOM 节点的组件必须选择它，组件可以指定它将其引用 “转发” 到其子组件中的一个。 以下是 `MyInput` 使用 `forwardRef` 的示例：
+
+```jsx
+import { forwardRef } from 'react'
+
+const MyInput = forwardRef((props, ref) => {
+  return <input {...props} ref={ref} />
+})
+```
+
+以上，当引用传递到 `<MyInput>` 时，引用将被转发到其中的 `<input>` 元素。
+
+```jsx
+import { useRef, forwardRef } from 'react'
+
+// 自己创建的组件
+const MyInput = forwardRef((props, ref) => {
+  return <input {...props} ref={ref} />
+})
+
+export default function MyForm() {
+  // 在另一个组件中创建 ref 对象
+  const inputRef = useRef(null)
+
+  function handleClick() {
+    inputRef.current.focus()
+  }
+
+  return (
+    <>
+      {/* 将 ref 对象传递给自己的组件 */}
+      <MyInput ref={inputRef} />
+      <button onClick={handleClick}>Focus the input</button>
+    </>
+  )
+}
+```
+
+在 button、input 和其他一些需要由父组件访问的组件中，使用 `forwardRef` 还是挺有用的。
+
+## 使用 Refs 的最佳实践
+
+- 仅在需要直接访问DOM节点时使用 `ref`，而不是用来存储数据
+  - 需要直接访问 DOM 节点的示例包括：
+    - 聚焦在 input 元素上
+    - 测量元素的大小
+    - 为元素添加事件监听器
+    - 滚动位置
+    - 调用 React 不支持的浏览器 API
+- 不要使用 `ref` 来存储数据，使用 `useState` 代替
+- 避免更改由 React 管理的 DOM 节点
+  - 示例：如果使用 `ref.current.remove()` 删除 DOM 节点，React将无法更新它。如果在此之后调用 `setState`，React 将无法更新 DOM 节点
