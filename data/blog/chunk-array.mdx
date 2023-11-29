@@ -1,0 +1,74 @@
+---
+title: 分块数组 - JavaScript 算法
+date: '2023-11-29'
+tags: ["算法", "分块数组"]
+draft: false
+summary: 返回给定大小的数据块
+layout: PostSimple
+---
+
+说明：给定一个数组和块大小，将数组划分为许多子数组，其中每个子数组的长度为 `size`。
+
+示例:
+
+```js
+chunk([1, 2, 3, 4], 2) --> [[ 1, 2], [3, 4]]
+chunk([1, 2, 3, 4, 5, 6, 7, 8], 3) --> [[ 1, 2, 3], [4, 5, 6], [7, 8]]
+chunk([1, 2, 3, 4, 5], 2) --> [[ 1, 2], [3, 4], [5]]
+chunk([1, 2, 3, 4, 5], 4) --> [[ 1, 2, 3, 4], [5]]
+chunk([1, 2, 3, 4, 5], 10) --> [[ 1, 2, 3, 4, 5]]
+```
+
+在上面的示例中， `chunk()` 函数中第一个参数为需要分块的数组，第二个参数为分块之后每个数组的大小。
+
+对于第一个示例，有一个数组和一个指定的 size 大小 为 2，因此，该数组应分为 2 个元素的块。
+
+# 解决方法 1:
+
+1. 创建空数组来保存称为 “chunk” 的块
+2. 遍历数组中的每个元素
+   1. 检索分块数组中的最后一个元素
+   2. 如果最后一个元素不存在，或者其长度等于块大小
+      - 则将新块推送到分块数组中
+   3. 否则将当前元素添加到分块数组中的最后一个元素
+
+```js
+function chunk(array, size) {
+  const chunked = []
+
+  for (let char of array) {
+    const last = chunked[chunked.length - 1] // 获取数组中的最后一个字符
+
+    if (!last || last.length === size) {
+      // 如果最后一个元素不存在，或者其长度等于块大小
+      chunked.push([char]) // 将包含 char 的新块推送到分块数组
+    } else {
+      last.push(char) // 将字符推送到最后一个块中
+    }
+  }
+
+  return chunked
+}
+```
+
+# 解决方法 2: 使用while 循环 和 `slice()`
+
+`Slice()` 语法:
+
+```
+slice()
+slice(start)
+slice(start, end)
+```
+
+```js
+function chunk(array, size) {
+  const chunked = []
+  let index = 0
+  while (index < array.length) {
+    chunked.push(array.slice(index, index + size))
+    index = index + size
+  }
+  return chunked
+}
+```
