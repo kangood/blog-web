@@ -1,6 +1,6 @@
 ---
 title: 'React Hooks：useRef & forwardRef'
-summary: '我从未真正理解什么时候应该使用 React 的 useRef 钩子，它感觉与 useState 比较像，但这两者都有自己最适合使用的场景。我之前也没理解清楚何时应该使用 forwardRef，我将解释这两个钩子以及何时应该使用它们。'
+summary: '我从未真正理解什么时候应该使用 React 的 useRef hooks，它感觉与 useState 比较像，但这两者都有自己最适合使用的场景。我之前也没理解清楚何时应该使用 forwardRef，我将解释这两个 hooks 以及何时应该使用它们。'
 date: '2023-11-26'
 draft: false
 tags: ['React', 'Hooks']
@@ -13,7 +13,7 @@ layout: PostSimple
 
 ## useRef
 
-当你想要 “记住” 一个值，但不希望该值触发重新渲染时，可以使用 `useRef` 钩子。在你想要存储一个不想更改的值，但又不想将它存储在状态中时，这是很有用的。
+当你想要 “记住” 一个值，但不希望该值触发重新渲染时，可以使用 `useRef` hooks。在你想要存储一个不想更改的值，但又不想将它存储在状态中时，这是很有用的。
 
 包括以下:
 

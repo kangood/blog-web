@@ -6,7 +6,7 @@ import type { Blog } from 'contentlayer/generated'
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
-import { getAllTag } from 'http/services/api'
+import { countListArticleTag } from 'http/services/api'
 import { headers } from 'next/headers'
 
 interface PaginationProps {
@@ -68,18 +68,8 @@ export default async function ListLayoutWithTags({
 }: ListLayoutProps) {
   const headersList = headers()
   const pathname = headersList.get('referer') || ''
-  // 调用 API 查询所有标签
-  const tags = await getAllTag()
-  // 对象list标签转为map
-  const tagCounts = tags.reduce(
-    (acc, tag) => {
-      acc[tag.content] = 2
-      return acc
-    },
-    {} as { [key: string]: number }
-  )
-  const tagKeys = Object.keys(tagCounts)
-  const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a])
+  // 调用 API 查询所有标签对应文章的数量
+  const tags = await countListArticleTag()
 
   const displayPosts = initialDisplayPosts.length > 0 ? initialDisplayPosts : posts
 
@@ -105,21 +95,21 @@ export default async function ListLayoutWithTags({
                 </Link>
               )}
               <ul>
-                {sortedTags.map((t) => {
+                {tags.map((item) => {
                   return (
-                    <li key={t} className="my-3">
+                    <li key={item.tag} className="my-3">
                       <div className="w-full mr-10">
-                        {pathname.split('/tags/')[1] === slug(t) ? (
+                        {pathname.split('/tags/')[1] === slug(item.tag) ? (
                           <h3 className="flex py-2 px-3 uppercase text-sm font-bold text-primary-600/100 dark:text-green-500 p-3 rounded-md bg-zinc-300 dark:bg-white/10 group w-full justify-start cursor-pointer transition ease-in-out">
-                            {`${t} (${tagCounts[t]})`}
+                            {`${item.tag} (${item.count})`}
                           </h3>
                         ) : (
                           <Link
-                            href={`/tags/${slug(t)}`}
+                            href={`/tags/${slug(item.tag)}`}
                             className="py-2 px-3 uppercase text-sm font-bold text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-green-500 hover:bg-zinc-200 rounded-md hover:dark:bg-white/10 hover:font-bold group flex p-3 w-full justify-start cursor-pointer transition ease-in-out"
-                            aria-label={`View posts tagged ${t}`}
+                            aria-label={`View posts tagged ${item.tag}`}
                           >
-                            {`${t} (${tagCounts[t]})`}
+                            {`${item.tag} (${item.count})`}
                           </Link>
                         )}
                       </div>
