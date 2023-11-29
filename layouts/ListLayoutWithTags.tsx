@@ -1,6 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-'use client'
-
 import { usePathname } from 'next/navigation'
 import { slug } from 'github-slugger'
 import { formatDate } from 'pliny/utils/formatDate'
@@ -9,7 +6,8 @@ import type { Blog } from 'contentlayer/generated'
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
-import tagData from 'app/tag-data.json'
+import { getAllTag } from 'http/services/api'
+import { headers } from 'next/headers'
 
 interface PaginationProps {
   totalPages: number
@@ -62,14 +60,24 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
   )
 }
 
-export default function ListLayoutWithTags({
+export default async function ListLayoutWithTags({
   posts,
   title,
   initialDisplayPosts = [],
   pagination,
 }: ListLayoutProps) {
-  const pathname = usePathname()
-  const tagCounts = tagData as Record<string, number>
+  const headersList = headers()
+  const pathname = headersList.get('referer') || ''
+  // 调用 API 查询所有标签
+  const tags = await getAllTag()
+  // 对象list标签转为map
+  const tagCounts = tags.reduce(
+    (acc, tag) => {
+      acc[tag.content] = 2
+      return acc
+    },
+    {} as { [key: string]: number }
+  )
   const tagKeys = Object.keys(tagCounts)
   const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a])
 

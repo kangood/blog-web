@@ -45,38 +45,6 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                     <Tag key={tag} text={tag} />
                   ))}
                 </div>
-                <div className="flex items-center justify-center mt-4 -mb-4">
-                  <ul className="flex flex-wrap justify-center gap-4 sm:space-x-12 xl:block xl:space-x-0 xl:space-y-8 bg-gray-200 dark:bg-zinc-700/70 p-2 rounded-lg shadow-md hover:bg-gray-300 hover:dark:bg-zinc-700">
-                    {authorDetails.map((author) => (
-                      <li className="flex items-center space-x-2" key={author.name}>
-                        {author.avatar && (
-                          <Image
-                            src={author.avatar}
-                            width={38}
-                            height={38}
-                            alt="avatar"
-                            className="h-10 w-10 rounded-full"
-                          />
-                        )}
-                        <dl className="whitespace-nowrap text-base font-medium leading-5">
-                          <dt className="sr-only">Name</dt>
-                          <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
-                          <dt className="sr-only">Github</dt>
-                          <dd>
-                            {author.github && (
-                              <Link
-                                href={author.github}
-                                className="text-primary-500 dark:text-green-400 font-bold hover:text-primary-600 dark:hover:text-green-500"
-                              >
-                                {author.github.replace('https://github.com/', 'Github/')}
-                              </Link>
-                            )}
-                          </dd>
-                        </dl>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
               </div>
             </div>
           </header>
