@@ -1,3 +1,5 @@
+'use client'
+
 import { usePathname } from 'next/navigation'
 import { slug } from 'github-slugger'
 import { formatDate } from 'pliny/utils/formatDate'
@@ -6,14 +8,14 @@ import type { Blog } from 'contentlayer/generated'
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
-import { countListArticleTag } from 'http/services/api'
-import { headers } from 'next/headers'
+import { TagCountType } from 'http/services/api'
 
 interface PaginationProps {
   totalPages: number
   currentPage: number
 }
 interface ListLayoutProps {
+  tagCountList: TagCountType[]
   posts: CoreContent<Blog>[]
   title: string
   initialDisplayPosts?: CoreContent<Blog>[]
@@ -60,17 +62,14 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
   )
 }
 
-export default async function ListLayoutWithTags({
+export default function ListLayoutWithTags({
+  tagCountList,
   posts,
   title,
   initialDisplayPosts = [],
   pagination,
 }: ListLayoutProps) {
-  const headersList = headers()
-  const pathname = headersList.get('referer') || ''
-  // 调用 API 查询所有标签对应文章的数量
-  const tags = await countListArticleTag()
-
+  const pathname = decodeURI(usePathname())
   const displayPosts = initialDisplayPosts.length > 0 ? initialDisplayPosts : posts
 
   return (
@@ -85,7 +84,7 @@ export default async function ListLayoutWithTags({
           <div className="hidden max-h-screen h-full sm:flex flex-wrap bg-gray-100 dark:bg-zinc-800/50 shadow-lg transition-colors duration-200 pt-5 rounded min-w-[280px] max-w-[280px]">
             <div className="py-4 px-6">
               {pathname.startsWith('/blog') ? (
-                <h3 className="text-primary-500 font-bold uppercase">全部文章</h3>
+                <h3 className="text-primary-500 font-bold">全部文章</h3>
               ) : (
                 <Link
                   href={`/blog`}
@@ -95,7 +94,7 @@ export default async function ListLayoutWithTags({
                 </Link>
               )}
               <ul>
-                {tags.map((item) => {
+                {tagCountList.map((item) => {
                   return (
                     <li key={item.tag} className="my-3">
                       <div className="w-full mr-10">

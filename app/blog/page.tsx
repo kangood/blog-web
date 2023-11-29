@@ -2,12 +2,13 @@ import ListLayout from '@/layouts/ListLayoutWithTags'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
 import { allBlogs } from 'contentlayer/generated'
 import { genPageMetadata } from 'app/seo'
+import { countListArticleTag } from 'http/services/api'
 
 const POSTS_PER_PAGE = 5
 
 export const metadata = genPageMetadata({ title: '文章' })
 
-export default function BlogPage() {
+export default async function BlogPage() {
   const posts = allCoreContent(sortPosts(allBlogs))
   const pageNumber = 1
   const initialDisplayPosts = posts.slice(
@@ -19,8 +20,11 @@ export default function BlogPage() {
     totalPages: Math.ceil(posts.length / POSTS_PER_PAGE),
   }
 
+  // 异步查询标签数量集合，传给ListLayout
+  const tagCountList = await countListArticleTag()
   return (
     <ListLayout
+      tagCountList={tagCountList}
       posts={posts}
       initialDisplayPosts={initialDisplayPosts}
       pagination={pagination}

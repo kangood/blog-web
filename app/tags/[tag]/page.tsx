@@ -3,12 +3,12 @@ import { allCoreContent } from 'pliny/utils/contentlayer'
 import siteMetadata from '@/data/siteMetadata'
 import ListLayout from '@/layouts/ListLayoutWithTags'
 import { allBlogs } from 'contentlayer/generated'
-import tagData from 'app/tag-data.json'
 import { genPageMetadata } from 'app/seo'
 import { Metadata } from 'next'
+import { countListArticleTag } from 'http/services/api'
 
 export async function generateMetadata({ params }: { params: { tag: string } }): Promise<Metadata> {
-  const tag = params.tag
+  const tag = decodeURI(params.tag)
   return genPageMetadata({
     title: tag,
     description: `${siteMetadata.title} ${tag} tagged content`,
@@ -21,23 +21,28 @@ export async function generateMetadata({ params }: { params: { tag: string } }):
   })
 }
 
-export const generateStaticParams = async () => {
-  const tagCounts = tagData as Record<string, number>
-  const tagKeys = Object.keys(tagCounts)
-  const paths = tagKeys.map((tag) => ({
-    tag: tag,
-  }))
-  return paths
-}
+// 这里不需要使用 generateStaticParams，数据就有了
+// export const generateStaticParams = async () => {
+//   // 调用 API 查询所有标签对应文章的数量
+//   const tags = await countListArticleTag()
+//   // 返回标签名称路径
+//   const paths = tags.map((item) => ({
+//     tag: item.tag,
+//   }))
+//   return paths
+// }
 
-export default function TagPage({ params }: { params: { tag: string } }) {
-  const { tag } = params
-  // Capitalize first letter and convert space to dash
+export default async function TagPage({ params }: { params: { tag: string } }) {
+  // 这里解码之后 中文 能点击查到了
+  const tag = decodeURI(params.tag)
+  // 将首字母大写并将空格转换为短横线
   const title = tag[0].toUpperCase() + tag.split(' ').join('-').slice(1)
   const filteredPosts = allCoreContent(
     allBlogs.filter(
       (post) => post.draft !== true && post.tags && post.tags.map((t) => slug(t)).includes(tag)
     )
   )
-  return <ListLayout posts={filteredPosts} title={title} />
+  // 异步查询标签数量集合，传给ListLayout
+  const tagCountList = await countListArticleTag()
+  return <ListLayout tagCountList={tagCountList} posts={filteredPosts} title={title} />
 }
