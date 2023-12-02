@@ -25,8 +25,8 @@ export default async function Page() {
                   <div className="mb-2 mr-5 mt-2 bg-gray-300 dark:bg-zinc-700 p-1 px-2 rounded-lg divide-x-2 divide-black dark:divide-white">
                     <Tag text={item.tag} />
                     <Link
-                      href={`/tags/${slug(item.tag)}`}
-                      className="-ml-2 text-base font-semibold uppercase text-gray-600 dark:text-gray-300"
+                      href={`/tags/${slug(item.tag, true)}`}
+                      className="-ml-2 text-base font-semibold text-gray-600 dark:text-gray-300"
                       aria-label={`View posts tagged ${item.tag}`}
                     >
                       {` ${item.count}`}

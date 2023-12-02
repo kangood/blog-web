@@ -88,7 +88,7 @@ export default function ListLayoutWithTags({
               ) : (
                 <Link
                   href={`/blog`}
-                  className="font-bold uppercase text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-500"
+                  className="font-bold text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-500"
                 >
                   全部文章
                 </Link>
@@ -98,14 +98,14 @@ export default function ListLayoutWithTags({
                   return (
                     <li key={item.tag} className="my-3">
                       <div className="w-full mr-10">
-                        {pathname.split('/tags/')[1] === slug(item.tag) ? (
-                          <h3 className="flex py-2 px-3 uppercase text-sm font-bold text-primary-600/100 dark:text-green-500 p-3 rounded-md bg-zinc-300 dark:bg-white/10 group w-full justify-start cursor-pointer transition ease-in-out">
+                        {pathname.split('/tags/')[1] === slug(item.tag, true) ? (
+                          <h3 className="flex py-2 px-3 text-sm font-bold text-primary-600/100 dark:text-green-500 p-3 rounded-md bg-zinc-300 dark:bg-white/10 group w-full justify-start cursor-pointer transition ease-in-out">
                             {`${item.tag} (${item.count})`}
                           </h3>
                         ) : (
                           <Link
-                            href={`/tags/${slug(item.tag)}`}
-                            className="py-2 px-3 uppercase text-sm font-bold text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-green-500 hover:bg-zinc-200 rounded-md hover:dark:bg-white/10 hover:font-bold group flex p-3 w-full justify-start cursor-pointer transition ease-in-out"
+                            href={`/tags/${slug(item.tag, true)}`}
+                            className="py-2 px-3 text-sm font-bold text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-green-500 hover:bg-zinc-200 rounded-md hover:dark:bg-white/10 hover:font-bold group flex p-3 w-full justify-start cursor-pointer transition ease-in-out"
                             aria-label={`View posts tagged ${item.tag}`}
                           >
                             {`${item.tag} (${item.count})`}

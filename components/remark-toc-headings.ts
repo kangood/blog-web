@@ -22,7 +22,7 @@ export function remarkTocHeadings() {
       const textContent = toString(node)
       toc.push({
         value: textContent,
-        url: '#' + slugger.slug(textContent),
+        url: '#' + slugger.slug(textContent, true),
         depth: node.depth,
       })
     })
