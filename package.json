@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "next dev -p 6603",
-    "dev": "cross-env next dev",
+    "dev": "cross-env next dev -p 6603",
     "build": "cross-env next build && cross-env NODE_OPTIONS='--experimental-json-modules'",
     "serve": "next start -p 6603",
     "analyze": "cross-env ANALYZE=true next build",

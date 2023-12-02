@@ -3,7 +3,7 @@ const siteMetadata = {
   title: "Kangod's Blog",
   author: 'Kangod Yan',
   headerTitle: "Kangod's Blog",
-  description: '探索技术、热爱生活',
+  description: '探索未知ing',
   language: 'zh-cn',
   theme: 'dark', // system, dark or light
   siteUrl: 'https://kangod.top',

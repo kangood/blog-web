@@ -13,7 +13,7 @@ export default function Projects() {
             我的项目
           </h1>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            我非常享受创意落地的过程，这是我构建的一些东西。
+            我非常享受创意落地的过程，这是我做的一些项目。
           </p>
         </div>
         <div className="py-5">

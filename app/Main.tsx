@@ -3,10 +3,14 @@ import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from 'pliny/utils/formatDate'
 import Image from 'next/image'
+import { getAllTag } from 'http/services/api'
 
 const MAX_DISPLAY = 5
 
-export default function Home({ posts }) {
+export default async function Home({ posts }) {
+  // 查询所有标签
+  const tags = await getAllTag();
+  
   return (
     <>
       <div className="flex items-center justify-between space-y-4 mt-7">
@@ -41,11 +45,23 @@ export default function Home({ posts }) {
         />
       </div>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-0 mt-3 md:mt-0 pb-2 pt-6 md:space-y-5">
-          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            最新文章
-          </h1>
-          <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">探索未知ing</p>
+        <div className="flex flex-row space-x-2">
+          <div className="space-y-2 pb-6 pt-6 md:space-y-2">
+            <h1 className="text-2xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-7xl sm:leading-10 md:text-5xl md:leading-14">
+              最新文章
+            </h1>
+            <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
+              {siteMetadata.description}
+            </p>
+          </div>
+          <div className="pt-10 pl-5">
+            {tags.length === 0 && 'No tags found.'}
+            <div className="flex flex-wrap mb-3">
+              {tags.map((tag) => (
+                <Tag key={tag.content} text={tag.content} />
+              ))}
+            </div>
+          </div>
         </div>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
           {!posts.length && 'No posts found.'}
