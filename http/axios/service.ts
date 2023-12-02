@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { isNil } from 'lodash'
 
 // 设置axios的额外配置
 export const service = axios.create({
@@ -20,7 +19,8 @@ service.interceptors.response.use(
   },
   async (error) => {
     // if (import.meta.env.DEV) console.log('respError', error);
-    if (!isNil(error.response))
+    // if (!isNil(error.response))
+    if (!error.response)
       switch (error.response.status) {
         case 401: {
           // 如果响应401就把原本的FetcherStore数据设置为空，好让页面跳至登录页
