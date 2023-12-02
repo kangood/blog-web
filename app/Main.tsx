@@ -9,8 +9,8 @@ const MAX_DISPLAY = 5
 
 export default async function Home({ posts }) {
   // 查询所有标签
-  const tags = await getAllTag();
-  
+  const tags = await getAllTag()
+
   return (
     <>
       <div className="flex items-center justify-between space-y-4 mt-7">
@@ -68,48 +68,43 @@ export default async function Home({ posts }) {
           {posts.slice(0, MAX_DISPLAY).map((post) => {
             const { slug, date, title, summary, tags } = post
             return (
-              <li key={slug} className="py-4">
-                <article>
-                  <div className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
-                    <dl>
-                      <dt className="sr-only">Published on</dt>
-                      <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                        <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
-                      </dd>
-                    </dl>
-                    <div className="space-y-5 xl:col-span-3 hover:lg:bg-gray-100 hover:lg:dark:bg-zinc-800/90 xl:p-4 xl:-ml-6 rounded-lg">
-                      <div className="space-y-6">
-                        <div>
-                          <h2 className="text-xl md:text-2xl font-bold  leading-8 tracking-tight">
-                            <Link
-                              href={`/blog/${slug}`}
-                              className="text-gray-800 hover:underline underline-offset-4 dark:text-gray-100 hover:dark:text-green-400"
-                            >
-                              <div>{title}</div>
-                            </Link>
-                          </h2>
-                          <div className="flex flex-wrap">
-                            {tags.map((tag) => (
-                              <Tag key={tag} text={tag} />
-                            ))}
+              <li key={slug} className="py-12">
+                <Link href={`/blog/${slug}`} className="text-gray-900 dark:text-gray-100">
+                  <article className="hover:-translate-y-1 hover:scale-110 duration-300 ...">
+                    <div className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0 rounded-lg shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                      <dl>
+                        <dt className="sr-only">Published on</dt>
+                        <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400 pl-5">
+                          <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
+                        </dd>
+                      </dl>
+                      <div className="space-y-5 xl:col-span-3 p-3">
+                        <div className="space-y-6">
+                          <div>
+                            <h2 className="text-2xl font-bold leading-8 tracking-tight">{title}</h2>
+                            <div className="flex flex-wrap">
+                              {tags.map((tag) => (
+                                <Tag key={tag} text={tag} />
+                              ))}
+                            </div>
+                          </div>
+                          <div className="prose max-w-none text-gray-500 dark:text-gray-400">
+                            {summary}
                           </div>
                         </div>
-                        <div className="prose max-w-none text-gray-500 dark:text-gray-400">
-                          {summary}
+                        <div className="text-base font-medium leading-6">
+                          <Link
+                            href={`/blog/${slug}`}
+                            className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                            aria-label={`Read '${title}'`}
+                          >
+                            查看更多 &rarr;
+                          </Link>
                         </div>
                       </div>
-                      <div className="text-base font-medium leading-6">
-                        <Link
-                          href={`/blog/${slug}`}
-                          className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                          aria-label={`Read "${title}"`}
-                        >
-                          查看更多 &rarr;
-                        </Link>
-                      </div>
                     </div>
-                  </div>
-                </article>
+                  </article>
+                </Link>
               </li>
             )
           })}
@@ -126,11 +121,6 @@ export default async function Home({ posts }) {
           </Link>
         </div>
       )}
-      {/* {siteMetadata.newsletter?.provider && (
-        <div className="flex items-center justify-center pt-4">
-          <NewsletterForm />
-        </div>
-      )} */}
     </>
   )
 }
