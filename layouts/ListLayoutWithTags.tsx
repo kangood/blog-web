@@ -124,34 +124,27 @@ export default function ListLayoutWithTags({
                 const { path, date, title, summary, tags } = post
                 return (
                   <li key={path} className="py-5 sm:-ml-6">
-                    <article className="space-y-2 flex flex-col xl:space-y-0 hover:bg-gray-100 hover:dark:bg-zinc-800/90 p-2 rounded-lg">
-                      <dl>
-                        <dt className="sr-only">Published on</dt>
-                        <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                          <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
-                        </dd>
-                      </dl>
-                      <div className="space-y-3">
-                        <div>
-                          <div className="w-full flex flex-row justify-between">
-                            <div className="w-full">
-                              <Link
-                                href={`/${path}`}
-                                className="text-gray-900 dark:text-gray-100 hover:dark:text-green-400 text-2xl font-bold leading-8 tracking-tight"
-                              >
-                                <div>{title}</div>
-                              </Link>
+                    <Link href={`/blog/${path}`} className="text-gray-900 dark:text-gray-100">
+                      <article className="space-y-2 p-5 flex flex-col xl:space-y-0 rounded-lg shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 hover:-translate-y-1 hover:scale-108 duration-300 ...">
+                        <dl>
+                          <dt className="sr-only">Published on</dt>
+                          <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
+                            <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
+                          </dd>
+                        </dl>
+                        <div className="space-y-3">
+                          <div>
+                            <h2 className="text-2xl font-bold leading-8 tracking-tight">{title}</h2>
+                            <div className="flex flex-wrap">
+                              {tags?.map((tag) => <Tag key={tag} text={tag} />)}
                             </div>
                           </div>
-                          <div className="flex flex-wrap">
-                            {tags?.map((tag) => <Tag key={tag} text={tag} />)}
+                          <div className="prose max-w-none text-gray-500 dark:text-gray-400">
+                            {summary}
                           </div>
                         </div>
-                        <div className="prose max-w-none text-gray-500 dark:text-gray-400">
-                          {summary}
-                        </div>
-                      </div>
-                    </article>
+                      </article>
+                    </Link>
                   </li>
                 )
               })}
