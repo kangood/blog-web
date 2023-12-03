@@ -8,8 +8,8 @@ import PageTitle from '@/components/PageTitle'
 import SectionContainer from '@/components/SectionContainer'
 import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
-import Image from '@/components/Image'
 import Tag from '@/components/Tag'
+import ProgressBar from '@/components/ProgressBar'
 
 interface LayoutProps {
   content: CoreContent<Blog>
@@ -23,6 +23,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
 
   return (
     <SectionContainer>
+      <ProgressBar />
       <div className="hidden md:block">
         <ScrollTopAndComment />
       </div>
