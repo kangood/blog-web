@@ -1,0 +1,177 @@
+---
+title: '在 CSS 中居中对齐的一些方法'
+date: '2022-11-25'
+tags: ['CSS', 'HTML']
+draft: false
+summary: 居中对齐 div 的一些方法总结
+layout: PostSimple
+---
+
+想要将一个 div 居中对齐，这做起来很简单，但有很多方法可以实现，以下是我找到的一些居中对齐 div 的方法
+
+## 文本居中
+
+### 水平居中
+
+使用简单的 HTML 来演示不同的文本居中方式
+
+```html
+<div class="red parent">
+  <div class="blue child">Some text</div>
+</div>
+```
+
+#### text-align: center
+
+居中文本的最常见方法是使用 `text-align` 属性，该属性可以设置为 `center、left、right` 或 `justify`，默认值为`left`。
+
+```css
+div {
+  text-align: center;
+}
+```
+
+#### justify-content: center
+
+> 需要使用 `display: flex` 将 div 设置为 `flex` 容器
+
+```css
+.parent {
+  display: flex;
+}
+
+.child {
+  text-align: center;
+}
+```
+
+### 垂直居中
+
+#### align-items: center
+
+> 需要使用 `display: flex` 将 div 设置为 `flex` 容器
+
+```css
+.parent {
+  display: flex;
+  align-items: center;
+}
+```
+
+#### position: absolute
+
+```html
+<div class="center">
+  <p>Some text</p>
+</div>
+```
+
+```css
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+```
+
+### 水平和垂直居中
+
+#### position: relative + position: absolute
+
+```html
+<div class="parent">
+  <p class="child">Some text</p>
+</div>
+```
+
+```css
+.parent {
+  position: relative;
+  background: blue;
+  height: 300px;
+  width: 300px;
+}
+
+.child {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+```
+
+## 居中对齐 div
+
+### 使用 position、top、left 和 margin
+
+```html
+<div class="parent">
+  <div class="child">这个 div 在垂直和水平方向上都居中对齐</div>
+</div>
+```
+
+```css
+.parent {
+  position: relative;
+  background: blue;
+  height: 300px;
+  width: 300px;
+}
+
+.child {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: red;
+}
+```
+
+### 使用 position、top、left 和 transform
+
+```html
+<div class="parent">
+  <div class="child">这个 div 在垂直和水平方向上都居中对齐</div>
+</div>
+```
+
+```css
+.parent {
+  position: relative;
+  background: blue;
+  height: 300px;
+  width: 300px;
+}
+
+.child {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: red;
+}
+```
+
+### 使用 flexbox
+
+```html
+<div class="parent">
+  <div class="child">这个 div 在垂直和水平方向上都居中对齐</div>
+</div>
+```
+
+```css
+.parent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: blue;
+  height: 300px;
+  width: 300px;
+}
+
+.child {
+  background: red;
+}
+```
