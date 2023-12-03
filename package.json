@@ -5,7 +5,7 @@
   "scripts": {
     "start": "next dev -p 6603",
     "dev": "cross-env next dev -p 6603",
-    "build": "cross-env next build && cross-env NODE_OPTIONS='--experimental-json-modules'",
+    "build": "cross-env next build && cross-env NODE_OPTIONS='--experimental-json-modules' node ./scripts/postContentlayer.mjs",
     "serve": "next start -p 6603",
     "analyze": "cross-env ANALYZE=true next build",
     "lint": "next lint --fix --dir pages --dir app --dir components --dir lib --dir layouts"
@@ -17,7 +17,7 @@
     "@vercel/analytics": "^1.0.2",
     "autoprefixer": "^10.4.13",
     "axios": "^1.6.2",
-    "contentlayer": "0.3.2",
+    "contentlayer": "0.3.4",
     "esbuild": "0.18.11",
     "flowbite": "^1.8.1",
     "flowbite-react": "^0.5.0",
@@ -26,7 +26,7 @@
     "image-size": "1.0.0",
     "lucide-react": "^0.268.0",
     "next": "13.4.12",
-    "next-contentlayer": "0.3.2",
+    "next-contentlayer": "0.3.4",
     "next-themes": "^0.2.1",
     "pliny": "0.1.1",
     "postcss": "^8.4.24",
