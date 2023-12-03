@@ -28,7 +28,7 @@ export const getAllTag = async () => {
 }
 
 /**
- * 分组查询各个分类对应文章数量
+ * 分组查询各个标签对应文章数量（只查询有标签的文章）
  */
 export const countListArticleTag = async () => {
   return await service.get<TagCountType[]>('/article/countListArticleTag').then((res) => res.data)

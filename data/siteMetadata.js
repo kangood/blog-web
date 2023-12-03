@@ -5,11 +5,11 @@ const siteMetadata = {
   headerTitle: "Kangod's Blog",
   description: '探索未知ing',
   language: 'zh-cn',
-  theme: 'dark', // system, dark or light
+  theme: 'system', // system, dark or light
   siteUrl: 'https://kangod.top',
   siteRepo: 'https://github.com/KangodYan',
   siteLogo: '/static/images/logo.png', // TODO
-  socialBanner: '/static/images/twitter-card.png', // TODO: 没用到
+  socialBanner: '/static/images/twitter-card.png', // PostBanner模式下的默认概览图
   email: 'kangod.yan@gmail.com',
   github: 'https://github.com/KangodYan',
   twitter: 'https://twitter.com/KangodYan',

@@ -4,7 +4,7 @@ import { slug } from 'github-slugger'
 import { genPageMetadata } from 'app/seo'
 import { countListArticleTag } from 'http/services/api'
 
-export const metadata = genPageMetadata({ title: 'Tags', description: 'Things I blog about' })
+export const metadata = genPageMetadata({ title: '标签' })
 
 export default async function Page() {
   // 调用 API 查询所有标签对应文章的数量

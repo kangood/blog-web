@@ -3,13 +3,13 @@ import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from 'pliny/utils/formatDate'
 import Image from 'next/image'
-import { getAllTag } from 'http/services/api'
+import { countListArticleTag } from 'http/services/api'
 
 const MAX_DISPLAY = 5
 
 export default async function Home({ posts }) {
   // 查询所有标签
-  const tags = await getAllTag()
+  const tags = await countListArticleTag()
 
   return (
     <>
@@ -57,8 +57,8 @@ export default async function Home({ posts }) {
           <div className="pt-10 pl-5">
             {tags.length === 0 && 'No tags found.'}
             <div className="flex flex-wrap mb-3">
-              {tags.map((tag) => (
-                <Tag key={tag.content} text={tag.content} />
+              {tags.map((tagCountType) => (
+                <Tag key={tagCountType.tag} text={tagCountType.tag} />
               ))}
             </div>
           </div>
