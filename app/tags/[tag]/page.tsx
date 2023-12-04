@@ -36,7 +36,8 @@ export default async function TagPage({ params }: { params: { tag: string } }) {
   // 这里解码之后 中文 能点击查到了
   const tag = decodeURI(params.tag)
   // 将首字母大写并将空格转换为短横线
-  const title = tag[0].toUpperCase() + tag.split(' ').join('-').slice(1)
+  // const title = tag[0].toUpperCase() + tag.split(' ').join('-').slice(1)
+  const title = tag
   const filteredPosts = allCoreContent(
     allBlogs.filter(
       (post) =>
