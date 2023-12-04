@@ -1,0 +1,144 @@
+---
+title: 'VS Code 扩展插件：REST Client'
+summary: 代替 Postman 的 VS Code 扩展插件，简单易用、无需登录、本地保存，在编辑器内部使用，无需切换到其他的界面
+date: '2023-12-04'
+draft: false
+tags: ['VS Code', '扩展插件']
+layout: PostSimple
+---
+
+<TOCInline toc={props.toc} topDepth={2} asDisclosure />
+
+## 基本使用
+
+- 创建后缀名为 `.http` 或`.rest` 的文件
+- 注释：使用 `#` 或 `//` 当作注释
+- 分隔：使用 `###` 当作多个 `request` 之间的分隔符号
+- 发送请求：选取要发送的请求，鼠标点右键，或使用快捷键 `ctrl + alt + R`
+- 透过 `ctrl + shift + p` 输入 `Rest Client` 可以看到所有和此插件相关的命令
+
+### 发送请求
+
+#### query
+
+```
+GET https://example.com/comments
+    ?page=2
+    &pageSize=10
+```
+
+#### 使用 application
+
+```
+POST https://api.example.com/login HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+name=foo
+&password=bar
+```
+
+### 预览 request
+
+`ctrl + shift + p` > `View Request History`
+
+## 使用变量
+
+在 Rest Client 中提供两种类型的变量可以使用：
+
+- 第一种是 `Custom Variables`，这是透过使用者自己定义的，并且可以再细分成 `Environment Variables`、`File Variables和Request Variables`
+- 另一种则是 `System Variables`，这种变量是使用前就定义好的
+
+### Custom Variables
+
+- Environment variables：定义在 VScode 的设定文件中，因此可以在不同的 `http` 文件被使用。
+- File variables：用来定义在某个 `http` 文件中会共用到的常量。
+- Request variables：用来定义在某个 `http` 文件中，某个 request 可能必须皆须在另一个 request 之后。例如，需要先取得 token 才能发送的请求。
+
+#### File variables
+
+使用File Variables 的语法像是这样：
+
+```
+@variableName = variableValue
+```
+
+- 变量名称不可包含空白
+- 变量的值可以包含空白
+- 变量的值可以参照到其他变量，例如 `@token = {{loginAPI.response.body.token}}`
+
+```
+@hostname = api.example.com
+@port = 8080
+@host = {{hostname}}:{{port}}
+@contentType = application/json
+@createdAt = {{$datetime iso8601}}
+
+###
+
+@name = hello
+
+GET https://{{host}}/authors/{{name}} HTTP/1.1
+```
+
+#### Request variables
+
+Request variables 和file variables 很类似，它们的作用域都是在单个 `http` 文件中。定义 request variables 的方式和单行注释类似：
+
+```
+// @name requestName
+# @name requestName
+```
+
+这个需要定义在 request url 之前，它后面所接的 request 可以称做被命名的请求（**Named Request**），而一般的请求则是称作匿名请求（**Anonymous Request**）。
+
+在定义好 Named Request 后，其他的请求则可以参照到这个 Named Request。要取得 request variable 的方法如下：
+
+```
+{{requestName.(response|request).(body|headers).(*|JSONPath|XPath|Header Name)}}
+```
+
+举例来说：
+
+- 透过 `# @name login` 我们定义下面这个请求的名称为 `login`
+
+```
+@baseUrl = https://example.com/api
+
+# @name login
+POST {{baseUrl}}/api/login HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+name=foo&password=bar
+
+###
+
+@authToken = {{login.response.headers.X-AuthToken}}
+
+# @name createComment
+POST {{baseUrl}}/comments HTTP/1.1
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+    "content": "fake content"
+}
+
+###
+
+@commentId = {{createComment.response.body.$.id}}
+
+# @name getCreatedComment
+GET {{baseUrl}}/comments/{{commentId}} HTTP/1.1
+Authorization: {{authToken}}
+
+###
+
+# @name getReplies
+GET {{baseUrl}}/comments/{{commentId}}/replies HTTP/1.1
+Accept: application/xml
+
+###
+
+# @name getFirstReply
+GET {{baseUrl}}/comments/{{commentId}}/replies/{{getReplies.response.body.//reply[1]/@id}}
+```
