@@ -8,7 +8,7 @@ const siteMetadata = {
   theme: 'system', // system, dark or light
   siteUrl: 'https://kangod.top',
   siteRepo: 'https://github.com/KangodYan',
-  siteLogo: '/static/images/logo.png', // TODO
+  siteLogo: '/static/images/logo.png',
   socialBanner: '/static/images/twitter-card.png', // PostBanner模式下的默认概览图
   email: 'kangod.yan@gmail.com',
   github: 'https://github.com/KangodYan',

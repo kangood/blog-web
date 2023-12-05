@@ -1,14 +1,19 @@
 {
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "icons": [
+      {
+          "sizes": "192x192",
+          "src": "./android-chrome-192x192.png",
+          "type": "image/png"
+      },
+      {
+          "sizes": "512x512",
+          "src": "./android-chrome-512x512.png",
+          "type": "image/png"
+      }
+  ],
   "name": "",
   "short_name": "",
-  "icons": [
-    {
-      "src": "/android-chrome-96x96.png",
-      "sizes": "96x96",
-      "type": "image/png"
-    }
-  ],
-  "theme_color": "#000000",
-  "background_color": "#000000",
-  "display": "standalone"
+  "theme_color": "#ffffff"
 }
