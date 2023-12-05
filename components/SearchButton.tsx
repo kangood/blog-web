@@ -19,10 +19,10 @@ const SearchButton = () => {
           <Search />
         </SearchButtonWrapper>
         <span className="hidden md:flex gap-1 text-xs text-muted-foreground">
-          <kbd className="flex items-center justify-center !w-5 !h-5 border border-current rounded-md">
+          <kbd className="flex items-center justify-center !w-5 !h-5 border border-zinc-700/20 dark:border-zinc-200/20 rounded-md">
             <CmdSVG />
           </kbd>
-          <kbd className="flex items-center justify-center !w-5 !h-5 p-1 border border-current rounded-md">
+          <kbd className="flex items-center justify-center !w-5 !h-5 p-1 border border-zinc-700/20 dark:border-zinc-200/20 rounded-md">
             K
           </kbd>
         </span>
