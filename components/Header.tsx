@@ -7,7 +7,8 @@ import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
 import SearchButton from './SearchButton'
 import { usePathname } from 'next/navigation'
-import Image from 'next/image'
+
+import LogoSVG from 'public/static/images/logo.svg'
 
 const Header = () => {
   const pathname = usePathname()
@@ -19,13 +20,7 @@ const Header = () => {
           <Link href="/" aria-label={siteMetadata.headerTitle}>
             <div className="flex items-center justify-between">
               <div className="mr-3">
-                <Image
-                  className="shadow-none rounded-none dark:invert"
-                  src="/static/images/logo.svg"
-                  alt="Logo"
-                  width={40}
-                  height={40}
-                />
+                <LogoSVG width={40} height={40} />
               </div>
               {typeof siteMetadata.headerTitle === 'string' ? (
                 <div className="hidden h-6 text-2xl font-semibold sm:block -mt-2">
