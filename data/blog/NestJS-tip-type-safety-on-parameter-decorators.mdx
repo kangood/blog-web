@@ -1,0 +1,105 @@
+---
+title: NestJS 技巧：参数装饰器的类型安全
+date: 2023-12-07
+draft: false
+tags: ['NestJS', 'TypeScript']
+summary: TypeScript 在 NestJS中 使用声明合并的应用，可以在 controller 类定义可读性更好、更方便维护的期望类型
+---
+
+在 NestJS 中，可以使用 `@nestjs/common` 中的 `createParamDecorator` 函数创建专门类型的参数装饰器。例如：
+
+```
+import { createParamDecorator, ExecutionContext } from '@nestjs/common'
+
+export const CurrentUser = createParamDecorator<
+  keyof User | undefined, // data 类型
+  ExecutionContext, // ctx 类型
+>(
+  (data, ctx) => {
+    const request = ctx.switchToHttp().getRequest()
+    const user = request.user
+    return typeof data === 'undefined'
+      ? user[data]
+      : user
+  }
+)
+```
+
+然后可以在控制器类的方法中使用 `CurrentUser` 参数装饰器：
+
+```
+@Get()
+getCurrentUser(
+  @CurrentUser() user: User,
+  @CurrentUser('name') username: string,
+) {
+  return { user, username }
+}
+```
+
+### 但是，这里有个问题：
+
+如果项目中有一堆这样的装饰器，可能很难知道它们解析值的类型是什么。也就是说，在没有任何文档或阅读源代码的情况下，是不知道 `@CurrentUser()` 和 `request.user` 存在绑定关系的。
+
+而且，`request.user` 的类型是什么？由于 TypeScript 传统装饰器的工作方式，TypeScript 编译器无法从此类参数装饰器推断某种类型。
+
+### 我的解决方案
+
+我使用了 TypeScript 声明合并功能来解决：
+
+```
+const Foo = 123
+type Foo = number
+
+const bar = (foo: Foo) => {
+    foo
+}
+
+bar(45)
+bar(Foo)
+```
+
+除了泛型之外，这样可以轻松的将装饰器与它的类型结合起来。
+
+只需要声明并导出一个与参数装饰器同名的类型别名：
+
+```
+import { createParamDecorator, ExecutionContext } from '@nestjs/common'
+
+export const CurrentUser = createParamDecorator<
+  keyof User | undefined, // data 类型
+  ExecutionContext, // ctx 类型
+>(
+  (data, ctx) => {
+    const request = ctx.switchToHttp().getRequest()
+    const user = request.user
+    return typeof data === 'undefined'
+      ? user[data]
+      : user
+  }
+)
+
+// 添加 CurrentUser
+export type CurrentUser<Prop extends keyof User | undefined = undefined> =
+  Prop extends keyof User ? User[Prop] : User
+```
+
+```
+@Get()
+getCurrentUser(
+  @CurrentUser() user: CurrentUser,
+  @CurrentUser('name') username: CurrentUser<'name'>
+) {
+  return { user, username }
+}
+```
+
+### 这样做的优点
+
+- 不需要去回想这些参数装饰器解析值的预期类型是什么，只需使用与装饰器相同的名称即可，也不需要仅仅为了类型安全而导入多个类型。
+- 这是一种参数装饰器的期望类型，如果以后更新了该装饰器的实现，就不用去修改代码库的其他部分。
+
+### 缺点
+
+- 如果使用像这样的 pipe：`@CurrentUser(MyPipe) somethingElse: any`，则 `somethingElse` 参数可能不再具有 `CurrentUser` 类型。所以，这种方式仅限于那些不适合与 pipe 一起使用的装饰器。
+- 如果已经很熟悉 `User` 实体了， `User` 类型比 `CurrentUser` 类型清晰。所以，通过在某些代码编辑器之外阅读代码，可能很难找到 `CurrentUser` 的含义，但这也是可以习惯的。
