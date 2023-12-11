@@ -1,10 +1,13 @@
-import projectsData from '@/data/projectsData'
 import Card from '@/components/Card'
 import { genPageMetadata } from 'app/seo'
+import { getAllProject } from 'http/services/api'
 
 export const metadata = genPageMetadata({ title: '项目' })
 
-export default function Projects() {
+export default async function Projects() {
+  // 查询所有项目
+  const projectsData = await getAllProject()
+
   return (
     <>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -18,14 +21,14 @@ export default function Projects() {
         </div>
         <div className="py-5">
           <div className="flex flex-wrap justify-center gap-8">
-            {projectsData.map((d) => (
+            {projectsData.map((project) => (
               <Card
-                key={d.title}
-                title={d.title}
-                description={d.description}
-                imgSrc={d.imgSrc}
-                href={d.href}
-                techStack={d.techStack}
+                key={project.title}
+                title={project.title}
+                description={project.description}
+                imgSrc={project.imgSrc}
+                href={project.href}
+                techStack={project.techStack}
               />
             ))}
           </div>

@@ -1,3 +1,4 @@
+import { TechStack } from '@/components/techStack'
 import { service } from 'http/axios/service'
 import { QueryResultType } from 'utils/types'
 
@@ -17,12 +18,30 @@ export interface TagOutputType {
   updatedBy?: number
 }
 
+export interface ProjectDataProps {
+  title: string
+  description: string
+  imgSrc: string
+  href: string
+  techStack: TechStack[]
+}
+
 /**
  * 查询所有标签
  */
 export const getAllTag = async () => {
   const data = await service
     .get<QueryResultType<TagOutputType>>('/tag', { params: { limit: 1000 } })
+    .then((res) => res.data)
+  return data ? data?.items : []
+}
+
+/**
+ * 查询所有项目
+ */
+export const getAllProject = async () => {
+  const data = await service
+    .get<QueryResultType<ProjectDataProps>>('/project', { params: { limit: 1000 } })
     .then((res) => res.data)
   return data ? data?.items : []
 }
