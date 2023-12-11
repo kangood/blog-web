@@ -1,0 +1,77 @@
+---
+title: 修补 npm 包已知 bug 的简单办法
+date: 2023-12-11
+draft: false
+tags: ["JavaScript","npm"]
+summary: 遇到某个 npm 包里面的代码有bug，或者不满足现有需求的时候，一个处理 npm 包的简单办法
+---
+
+当自己在开发的 JS 项目，遇到某个 npm 包里面的代码有bug，或者不满足现有需求的时候，一般情况下会怎么做？
+
+- 可能大多数人都是访问 npm 包对应的 github 仓库打开一个 `issues` 记录错误。但这样做的问题是，维护人员可能没有时间来修复它，而开发该模块的 `deadline` 又要到了，这个时候就需要寻求另外的方法了。
+
+- 另一种方法是，到 github 上 `fork` npm 源代码，修复它并打开 `PR`。这样会把自己的更改保留在本地，直到维护者批准更改并将其与主分支合并，所以，这同样也需要那未知时间的等待。
+
+- 在这种情况下，最好的方法是对 npm 包依赖项进行更改，并使用 `patch-package` 处理修复，以下是示例：
+
+### 修复一个依赖项中的错误
+
+```
+// node_modules/react-redux/dist/react-redux.js
+
+console.log('I am a redux patch');
+```
+
+### 安装 patch-package
+
+```
+npm install patch-package -D
+```
+
+或使用 yarn
+
+```
+yarn add patch-package postinstall-postinstall -D
+```
+
+安装处理脚本
+
+```
+"scripts": {
+    "postinstall": "patch-package"
+}
+```
+
+### 运行 patch-package 创建 .patch 文件
+
+```
+npx patch-package react-redux or npx patch-package react-redux --yarn
+```
+
+patch 文件内容如下：
+
+```
+diff --git a/node_modules/react-redux/dist/react-redux.js b/node_modules/react-redux/dist/react-redux.js
+index c56d7f2..3a2b1e2 100644
+--- a/node_modules/react-redux/dist/react-redux.js
++++ b/node_modules/react-redux/dist/react-redux.js
+@@ -27,6 +27,8 @@
+
+    var hasSymbol = typeof Symbol === 'function' && Symbol.for;
+
++   console.log('I am a redux patch');
++
+    var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
+    var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
+    var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
+```
+
+### 通过 npm 包管理器处理修复
+
+```
+npm install or yarn install
+```
+
+### 提交 patches 文件夹里的代码
+
+完毕
