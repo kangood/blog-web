@@ -33,7 +33,7 @@ const Card = ({ title, description, imgSrc, href, techStack }) => {
         )}
         <div className="flex-grow p-3">
           <div className="flex flex-wrap gap-2 mb-5">
-            {techStack.map((t) => {
+            {techStack?.map((t) => {
               const Icon = DevIcons[t]
               return (
                 <div
