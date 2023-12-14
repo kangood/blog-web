@@ -1,0 +1,140 @@
+---
+title: NestJS 定义和平台无关的响应状态/标头方法
+date: 2023-12-14
+draft: false
+tags: ["NestJS","Node.js"]
+summary: 比官方定义 library-specific 模式，实现动态更改默认状态码/标头更好的方法，做到真正的 platform agnosticism
+---
+
+如果想动态更改默认状态码，或者想动态定义 HTTP 标头，可能一般会使用NestJS官方定义的 `library-specific` 模式：
+
+```
+import { Res } from '@nestjs/common'
+import type { Response } from 'express'
+
+@Get()
+findAll(@Res({ passthrough: true }) res: Response) {
+  const statusCode = something ? 200 : 201
+  res.status(statusCode)
+}
+```
+
+如上所示，由于使用了 `@Res()`（或 `@Response()`）装饰器），已经切换到了 `library-specific` 模式。因此，`res` 参数将是由底层 HTTP 服务器（示例中为 ExpressJS）创建的对象。
+
+通过采用这种方法，NestJS 应用程序打破了其 **平台不相关** 的说法。所以，如果不更改除 `main.ts` 之外的源代码的其他部分，将无法使用其他 **非Express** 的 HTTP 适配器。
+
+### 解决方案
+
+目前来说，解决此类问题比较好的方法，是在响应对象之上再设置一个 `AbstractResponse`：
+
+```
+import { Controller, Get } from '@nestjs/common'
+import { GenericResponse } from './generic-response.decorator'
+
+@Controller()
+export class AppController {
+  @Get()
+  getHello(@GenericResponse() res: GenericResponse): string {
+    res
+      .setHeader('X-Header', 'foo')
+      .setStatus(201)
+    return 'Hello World'
+  }
+}
+```
+
+这样可以利用执行 context 对象来检索当前响应对象，同时使用 `HttpAdapterHost` 访问由 HTTP 适配器实现的高级操作。
+
+最后，可以使用 Pipes 和 `createParamDecorator` 来建立他们之间的关联，同时改善这个办法的接口。
+
+这样做之后，就不再操作特定库的响应对象，也使得代码在不同的 HTTP 适配器之间都可复用。
+
+完整代码如下：
+
+- app.controller.ts
+
+```
+import { Controller, Get } from '@nestjs/common';
+import { GenericResponse } from './generic-response.decorator';
+
+@Controller()
+export class AppController {
+  @Get()
+  getHello(@GenericResponse() res: GenericResponse): string {
+    res
+      .setHeader('X-Header', 'foo')
+      .setStatus(201);
+    return 'Hello';
+  }
+}
+```
+
+- generic-response.decorator.ts
+
+```
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { AbstractResponse } from './abstract-response';
+import { ExecutionContextToAbstractResponsePipe } from './ctx-to-abstract-response.pipe';
+
+const GetExecutionContext = createParamDecorator(
+  (
+    _: never,
+    ctx: ExecutionContext,
+  ): ExecutionContext => ctx,
+);
+
+export const GenericResponse = (): ParameterDecorator =>
+  GetExecutionContext(ExecutionContextToAbstractResponsePipe);
+
+export type GenericResponse = AbstractResponse;
+```
+
+- ctx-to-abstract-response.pipe.ts
+
+```
+import { Injectable, PipeTransform, ExecutionContext } from '@nestjs/common';
+import { HttpAdapterHost } from '@nestjs/core';
+import { AbstractResponse } from './abstract-response'
+
+@Injectable()
+export class ExecutionContextToAbstractResponsePipe implements PipeTransform {
+  constructor(
+    private readonly httpAdapterHost: HttpAdapterHost,
+  ) {}
+
+  transform(ctx: ExecutionContext): AbstractResponse {
+    return new AbstractResponse(this.httpAdapterHost.httpAdapter, ctx);
+  }
+}
+```
+
+- abstract-response.ts
+
+```
+import type { ExecutionContext } from '@nestjs/common';
+import type { HttpArgumentsHost } from '@nestjs/common/interfaces';
+import { AbstractHttpAdapter } from '@nestjs/core';
+
+export class AbstractResponse {
+  httpCtx: HttpArgumentsHost;
+
+  constructor(
+    private readonly httpAdapter: AbstractHttpAdapter,
+    readonly executionContext: ExecutionContext,
+  ) {
+    this.httpCtx = executionContext.switchToHttp();
+  }
+
+  /** 在提供的响应对象上定义 HTTP 标头 */
+  setHeader(name: string, value: string): this {
+    this.httpAdapter.setHeader(this.httpCtx.getResponse(), name, value);
+    return this;
+  }
+
+  /** 在提供的响应对象上定义 HTTP 状态码 */
+  setStatus(statusCode: number): this {
+    this.httpAdapter.status(this.httpCtx.getResponse(), statusCode);
+    return this;
+  }
+}
+```
