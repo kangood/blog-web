@@ -9,7 +9,7 @@ const siteMetadata = {
   siteUrl: 'https://kangod.top',
   siteRepo: 'https://github.com/KangodYan',
   siteLogo: '/static/images/logo.png',
-  socialBanner: '/static/images/twitter-card.png', // PostBanner模式下的默认概览图
+  socialBanner: '/static/images/pexels-polina-kovaleva.jpg', // PostBanner模式下的默认概览图
   email: 'kangod.yan@gmail.com',
   github: 'https://github.com/KangodYan',
   twitter: 'https://twitter.com/KangodYan',
@@ -26,7 +26,7 @@ const siteMetadata = {
       umamiWebsiteId: process.env.NEXT_UMAMI_ID, // 例子：123e4567-e89b-12d3-a456-426614174000
     },
     // plausibleAnalytics: {
-    //   plausibleDataDomain: '', // 例子：tailwind-nextjs-starter-blog.vercel.app
+    //   plausibleDataDomain: '', // 例子：kangod.top
     // },
     // simpleAnalytics: {},
     // posthogAnalytics: {
@@ -43,7 +43,6 @@ const siteMetadata = {
   },
   comments: {
     // 选择一个 provider，并使用与其关联的环境变量
-    // https://vercel.com/docs/environment-variables
     provider: 'giscus', // 支持的 providers: giscus, utterances, disqus
     giscusConfig: {
       // 访问下面的链接，并按照 configuration 部分的步骤操作
@@ -64,7 +63,7 @@ const siteMetadata = {
       // 参考：https://giscus.app/themes/custom_example.css
       themeURL: '',
       // 这对应于 giscus 配置中的 data-lang="en"
-      lang: 'en',
+      lang: 'zh-CN',
     },
   },
   search: {
