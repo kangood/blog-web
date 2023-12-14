@@ -6,7 +6,7 @@ tags: ["NestJS","Node.js"]
 summary: 比官方定义 library-specific 模式，实现动态更改默认状态码/标头更好的方法，做到真正的 platform agnosticism
 ---
 
-如果想动态更改默认状态码，或者想动态定义 HTTP 标头，可能一般会使用NestJS官方定义的 `library-specific` 模式：
+如果想动态更改默认状态码，或者想动态定义 HTTP 标头，可能一般会使用 NestJS 官方定义的 `library-specific` 模式：
 
 ```
 import { Res } from '@nestjs/common'
@@ -25,7 +25,7 @@ findAll(@Res({ passthrough: true }) res: Response) {
 
 ### 解决方案
 
-目前来说，解决此类问题比较好的方法，是在响应对象之上再设置一个 `AbstractResponse`：
+目前来说，解决此类问题比较好的方法，是在响应对象之上再设置一个抽象层（我称之为 `AbstractResponse`），就像这样：
 
 ```
 import { Controller, Get } from '@nestjs/common'
