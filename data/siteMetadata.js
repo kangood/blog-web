@@ -5,7 +5,7 @@ const siteMetadata = {
   headerTitle: "Kangod's Blog",
   description: '探索未知ing',
   language: 'zh-cn',
-  theme: 'system', // system, dark or light
+  theme: 'dark', // system, dark or light
   siteUrl: 'https://kangod.top',
   siteRepo: 'https://github.com/KangodYan',
   siteLogo: '/static/images/logo.png',
@@ -20,69 +20,63 @@ const siteMetadata = {
     mail: 'mailto:kangod.yan@gmail.com',
   },
   analytics: {
-    // If you want to use an analytics provider you have to add it to the
-    // content security policy in the `next.config.js` file.
-    // supports Plausible, Simple Analytics, Umami, Posthog or Google Analytics.
+    // 如果你想使用分析 provider，必须将其添加到 next.config.js 文件中的内容安全策略中
+    // 支持 Plausible、Simple Analytics、Umami、Posthog 或 Google Analytics
     umamiAnalytics: {
-      // We use an env variable for this site to avoid other users cloning our analytics ID
-      umamiWebsiteId: process.env.NEXT_UMAMI_ID, // e.g. 123e4567-e89b-12d3-a456-426614174000
+      umamiWebsiteId: process.env.NEXT_UMAMI_ID, // 例子：123e4567-e89b-12d3-a456-426614174000
     },
     // plausibleAnalytics: {
-    //   plausibleDataDomain: '', // e.g. tailwind-nextjs-starter-blog.vercel.app
+    //   plausibleDataDomain: '', // 例子：tailwind-nextjs-starter-blog.vercel.app
     // },
     // simpleAnalytics: {},
     // posthogAnalytics: {
-    //   posthogProjectApiKey: '', // e.g. 123e4567-e89b-12d3-a456-426614174000
+    //   posthogProjectApiKey: '', // 例子：123e4567-e89b-12d3-a456-426614174000
     // },
     // googleAnalytics: {
-    //   googleAnalyticsId: '', // e.g. G-XXXXXXX
+    //   googleAnalyticsId: '', // 例子：G-XXXXXXX
     // },
   },
   newsletter: {
-    // supports mailchimp, buttondown, convertkit, klaviyo, revue, emailoctopus
-    // Please add your .env file and modify it according to your selection
+    // 支持 mailchimp、buttondown、convertkit、klaviyo、revue、emailoctopus
+    // 请添加你的 .env 文件并根据你的选择进行修改
     provider: 'mailchimp',
   },
   comments: {
-    // If you want to use an analytics provider you have to add it to the
-    // content security policy in the `next.config.js` file.
-    // Select a provider and use the environment variables associated to it
+    // 选择一个 provider，并使用与其关联的环境变量
     // https://vercel.com/docs/environment-variables
-    provider: 'giscus', // supported providers: giscus, utterances, disqus
+    provider: 'giscus', // 支持的 providers: giscus, utterances, disqus
     giscusConfig: {
-      // Visit the link below, and follow the steps in the 'configuration' section
+      // 访问下面的链接，并按照 configuration 部分的步骤操作
       // https://giscus.app/
       repo: process.env.NEXT_PUBLIC_GISCUS_REPO,
       repositoryId: process.env.NEXT_PUBLIC_GISCUS_REPOSITORY_ID,
       category: process.env.NEXT_PUBLIC_GISCUS_CATEGORY,
       categoryId: process.env.NEXT_PUBLIC_GISCUS_CATEGORY_ID,
-      mapping: 'pathname', // supported options: pathname, url, title
-      reactions: '1', // Emoji reactions: 1 = enable / 0 = disable
-      // Send discussion metadata periodically to the parent window: 1 = enable / 0 = disable
+      mapping: 'pathname', // 支持的选项: pathname, url, title
+      reactions: '1', // 表情 reactions: 1 = enable / 0 = disable
+      // 定期向父窗口发送讨论元数据: 1 = enable / 0 = disable
       metadata: '0',
-      // theme example: light, dark, dark_dimmed, dark_high_contrast
-      // transparent_dark, preferred_color_scheme, custom
+      // 主题示例：light, dark, dark_dimmed, dark_high_contrast, transparent_dark, preferred_color_scheme, custom
       theme: 'light',
-      // theme when dark mode
+      // 使用暗黑主题
       darkTheme: 'transparent_dark',
-      // If the theme option above is set to 'custom`
-      // please provide a link below to your custom theme css file.
-      // example: https://giscus.app/themes/custom_example.css
+      // 如果上面的主题选项设置为 custom，请在下面提供指向你的自定义主题css文件的链接
+      // 参考：https://giscus.app/themes/custom_example.css
       themeURL: '',
-      // This corresponds to the `data-lang="en"` in giscus's configurations
+      // 这对应于 giscus 配置中的 data-lang="en"
       lang: 'en',
     },
   },
   search: {
     provider: 'kbar', // kbar or algolia
     kbarConfig: {
-      searchDocumentsPath: 'search.json', // path to load documents to search
+      searchDocumentsPath: 'search.json', // 用于加载需要搜索的文档路径
     },
     // provider: 'algolia',
     // algoliaConfig: {
-    //   // The application ID provided by Algolia
+    //   // Algolia 提供的应用程序 ID
     //   appId: 'R2IYF7ETH7',
-    //   // Public API key: it is safe to commit it
+    //   // 公共API密钥：可以安全地提交它
     //   apiKey: '599cec31baffa4868cae4e79f180729b',
     //   indexName: 'docsearch',
     // },
