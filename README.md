@@ -18,4 +18,7 @@
 - 搜索面板：Kbar
 - 评论系统：Giscus
 
-后端项目：<a href="https://github.com/KangodYan/lamp-nestjs-3r-kd" target="_blank" >Blog Api NestJS</a>
+博客后台：[Blog Admin React](https://github.com/KangodYan/lamp-react-3r-kd)
+<br/>
+<br/>
+后端 API：[Blog Api NestJS](https://github.com/KangodYan/lamp-nestjs-3r-kd)
