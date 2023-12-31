@@ -1,23 +1,16 @@
 export type TechStack =
-  | 'Python'
   | 'TypeScript'
   | 'JavaScript'
   | 'Java'
   | 'React'
   | 'NextJS'
-  | 'Svelte'
-  | 'TensorFlow'
-  | 'PyTorch'
-  | 'Streamlit'
   | 'PostgreSQL'
   | 'MySQL'
-  | 'MongoDB'
-  | 'Firebase'
-  | 'FastAPI'
+  | 'Redis'
   | 'Docker'
   | 'Git'
   | 'Prisma'
-  | 'Drizzle'
+  | 'TypeORM'
   | 'TailwindCSS'
   | 'ShadcnUI'
   | 'Vite'
@@ -25,25 +18,18 @@ export type TechStack =
   | 'TanStackQuery'
 
 export const techStack: TechStack[] = [
-  'Python',
   'TypeScript',
   'JavaScript',
   'Java',
   'React',
   'NextJS',
-  'Svelte',
-  'TensorFlow',
-  'PyTorch',
-  'Streamlit',
   'PostgreSQL',
   'MySQL',
-  'MongoDB',
-  'Firebase',
-  'FastAPI',
+  'Redis',
   'Docker',
   'Git',
   'Prisma',
-  'Drizzle',
+  'TypeORM',
   'TailwindCSS',
   'ShadcnUI',
   'Vite',
