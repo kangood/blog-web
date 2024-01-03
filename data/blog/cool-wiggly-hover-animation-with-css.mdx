@@ -1,0 +1,43 @@
+---
+title: 使用 CSS 实现炫酷的摆动悬停动画
+date: 2024-01-03
+draft: false
+tags: ["CSS"]
+summary: 我最近在 byline 上看到了一个很酷的摆动悬停动画，发现它很有意思，去研究了一下它的具体实现
+---
+
+我看到的摆动悬停动画，如下图所示：
+
+<video id="video" poster="https://qiniu.panlore.top/kd-blog/wiggly-animation.png" playsInline autoPlay loop muted>
+    <source id="mp4" src="https://qiniu.panlore.top/kd-blog/wiggly-animation.mp4" type="video/mp4" />
+    <source id="webm" src="https://qiniu.panlore.top/kd-blog/wiggly-animation.webm" type="video/webm" />
+</video>
+
+我研究了它的代码，它是这样完成的：
+
+```
+button:hover {
+    animation: wiggle 0.5s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+  0% {
+      rotate: 0deg;
+      translate: 0 0
+  }
+
+  25% {
+      rotate: -2deg;
+      translate: -5px 0
+  }
+
+  80% {
+      rotate: 2deg;
+      translate: 5px 0
+  }
+}
+```
+
+如上所示，在按钮的 hover 状态上调用 wiggle 动画，wiggle 动画本质上是一个关键帧动画，它将按钮旋转一定角度，并在动画的一定百分比上平移一定数量的像素。
+
+我认为这种动画最适合想要引起用户注意的元素，在我看来，它肯定会吸引用户点击目标元素。
