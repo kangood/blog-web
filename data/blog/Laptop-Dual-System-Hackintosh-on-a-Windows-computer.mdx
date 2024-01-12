@@ -1,0 +1,136 @@
+---
+title: Dell Inspiron 7590 安装黑苹果 macOS Ventura 13.4
+date: 2024-01-10
+draft: false
+tags: ["黑苹果","macOS"]
+summary: 通过两块硬盘隔离系统环境，一个是原本在使用的 Windows 系统，一个是新硬盘加装的 Hackintosh（黑苹果）
+---
+
+## 前言
+
+第一次安装黑苹果，并在我的笔记本电脑上使用双系统，来回自如切换。
+
+这也是我第一次使用 macOS，解决了很多 Windows 系统下无法解决的问题，用起来也非常流畅。
+
+对我的全栈开发也更好友好，减少了一些奇奇怪怪的开发问题。
+
+## 安装环境
+
+* 笔记本电脑：Dell Inspiron 7590（1080p 版本）
+* 系统镜像版本：macOS Ventura 13.4（版号22F66）
+* 双系统分区：原装自带的 SK Hynix BC501 SSD 安装 Windows 10，自购的 Lexar NM620 SSD 安装 macOS
+* 引导方式：使用 OpenCore 0.9.2 引导，新买的 U 盘 Kioxia U301 烧录 macOS 镜像和 EFI
+* 网卡：Intel Wireless-AC 9560（可以正常使用）
+* 显卡：Intel UHD Graphics 630（黑苹果的独立 NVIDIA 显卡都无法使用，只用板载显卡是可以的）
+* 声卡：Realtek ALC295（因为附加了英特尔智音技术，麦克风问题未解决）
+
+## 安装步骤
+
+* 下载镜像：[黑苹果原版 macOS Ventura 13.4 (22F66) 自带 OC 引导 v0.9.2 系统](https://osx.cx/macos-ventura-13-4-22f66.html)，花了 5 块钱
+* 下载 balenaEtcher：[https://etcher.balena.io](https://etcher.balena.io)
+* 制作安装镜像：选择镜像、选择 U 盘，Flash 烧录
+* 替换安装盘中的 EFI（要适合自己机型的）：[Dell-Inspiron-7590-Ventura](https://github.com/6923403/Dell-Inspiron-7590-Ventura)，替换 BOOT 和 OC 文件夹内容
+* BIOS 设置：F2 进入。禁用 Secure Boot；设置磁盘模式为 ACHI；设置启动顺序，Boot Option #1 为 U 盘 partition 1
+* 通过 U 盘进入 OpenCore 主引导界面，选择 OSX.CV (external)
+* 先在左上角选择语言，再进入磁盘工具。抹掉准备好的磁盘，名称：Ventura、格式：APFS、方案选择 GUID 分区图
+* 完成之后退出磁盘工具，点击安装系统并选好硬盘，重启后在 OC 引导界面选择 macOS Installer 进入
+* 重启几次，通过 OC 引导进入系统，完成设置向导，其后在终端完成一些安装后的设置
+* 使用 Hackintool 工具挂载硬盘，然后把 U 盘的 EFI 文件夹整个复制到硬盘 EFI 中
+* 再次重启，设置安装系统的那个硬盘为第一启动顺序，重启后在 OC 引导中选择 Ventura 即可进入高贵的 macOS
+
+> 主要参考：[黑果小兵安装教程](https://blog.daliansky.net/minisforum-HX90G-and-HX99G-macOS-Ventura-Installation-Tutorial.html)：minisforum HX80G/HX90G 兼 Ventura 安装教程
+
+## 出现问题 & 解决问题
+
+### 已解决的问题
+
+* [balenaEtcher 烧录失败](https://blog.csdn.net/weixin_39302449/article/details/130033341)：可能导致balenaEtcher写入出错的原因以及如何解决这些问题
+* 笔记本装上新的硬盘，BIOS 上无法识别：恢复 BIOS 为默认设置解决
+* 通过 OC 引导进入 Windows 系统，蓝屏：通过 OCC 打开 config.plist 文件，在 `Booter-启动设置` 中勾选 `SyncRuntimePermissions`
+* 鼠标滚动方向和 Windows 相反：使用软件 Mos 解决，单独修改鼠标滚动的方向
+* [双系统之间时间不同步](https://heipg.cn/tutorial/solving-time-sync-problem.html)：解决 Windows/macOS 双系统时间不同步问题^（Windows 是直接读取系统硬件时间、macOS 会自己换算然后修改系统硬件时间）^。采用了第一种修改 Windows 读取系统时间方法，BIOS 时间没管
+* chrome 右键需要双击才出现：关闭扩展程序鼠标手势「 crxMouse 」就好了
+* macOS 终端运行提示`Operation not permitted`解决办法：放开终端的完全磁盘访问权限
+* 键盘输入的问题
+
+  * 输入法大小写、中英文切换和 Windows 习惯不一样：使用微信输入法解决，而且它比原生的输入法用着更舒服、更顺手，细节更好
+  * 修改系统默认输入法、定制 App 输入习惯：~~使用~~ ~~[KeyboardHolder](https://keyboardholder.leavesc.com/zh-cn/)~~ ~~软件解决~~，换成了 [Input Source Pro](https://inputsource.pro/) 更好用
+  * 使用不同输入法来切换中英文^（ABC 输入法作为纯英文输入，微信输入法作为中文输入）^：使用`shift`来回切换输入法，用 [Karabiner-Elements](https://github.com/pqrs-org/Karabiner-Elements?tab=readme-ov-file) 开源软件解决，参考了 [babyking](https://github.com/babyking/KarabinerConfiguration) 的配置文件
+* 拷贝 EFI 到硬盘提示 EFI 中的可用空间不足
+
+  * 在删除 EFI 目录之后，需要清空回收站，再重新拷贝进去^（清空回收站能释放一些空间，很奇怪的是在终端使用 du -h . 也看不见被什么占用了，到最后还是拷贝无法成功）^
+  * [黑苹果EFI分区空间占满处理方法](https://mrasong.com/a/hackintosh-efi-format)：被看不见的东西占满了 EFI 分区，重新格式化的方法有效。但是 EFI 引导丢了，使用下面的方法修复
+* [黑苹果双系统丢失mac系统引导恢复](https://zhuanlan.zhihu.com/p/618721388?utm_id=0)：进入 Windows PE 使用 DiskGenius 分区软件修复
+* 蓝牙无法使用
+
+  * 尝试用 [IntelBluetoothFirmware](https://github.com/OpenIntelWireless/IntelBluetoothFirmware) 开源方案^（我电脑的 USB ID 在这个项目的支持列表当中；故障排查中写的蓝牙 HCI 也是有的，后面有时间再看什么原因导致的。还有就是，EFI 中的这个 kext 和 github 上面版本是一样的）^，没有解决。还因为把 IntelBluetoothInjector.kext 一并放进去了导致进不了系统
+  * 尝试用 [这篇安装黑苹果强调顺序的文章](https://post.smzdm.com/p/arq4mpnx/)以及[Joseph-Hui 提供的方法](https://github.com/6923403/Dell-Inspiron-7590-Ventura/issues/1#issuecomment-1675960497)修改驱动顺序，没有解决^（先是删除驱动删错了，导致 wifi 连不上，然后因为来回换 EFI 导致 EFI 分区被莫名其妙占满，格式化之后引导也丢了）^。
+  * 成功使用上蓝牙：在以上修改顺序的基础上，再做了两个改动。一个是在 OCC 中删掉了 AirportBrcmFixup 相关的驱动，而不是像我之前做的只在 OCC 中关闭启用；第二个是把 BlueToolFixup.kext 升级到了 2.6.8，重启之后蓝牙可以正常打开/关闭，连接蓝牙耳机正常
+
+### 待解决的问题
+
+* U 盘烧录之后的剩余空间无法利用
+* 后期需要备份 macOS 的数据
+* 雷蛇鼠标快捷键在 macOS 上设置
+
+### 解决一半的问题
+
+* [禁止 macOS 更新](https://sysin.org/blog/disable-macos-ventura-update/#2-macOS-Ventura-%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E8%87%AA%E5%8A%A8%E6%9B%B4%E6%96%B0)：如何彻底禁止 macOS Ventura 自动更新，去除更新标记和通知^（使用 hosts 屏蔽 macOS 更新地址，由于开启了系统代理失效了）^。清除了更新标记，~~不进入更新选项，应该就不会显示了~~，只是临时清除，重启几次之后会还原
+* macOS 睡眠模式：mac 电脑说是几乎可以不用关电脑，我的 Dell 电脑在睡眠模式下，偶尔风扇还会转的，后续放包里观察一下
+* [键盘上的 home 和 end 键作用改为行首和行尾](https://jsrun.net/note/cjBpp)：macOS 通用的HOME和END键。有一些 App 还是没变
+* macOS 卸载了某个 App 但系统设置中「允许在后台」还存在那个 App：[尝试](https://discussionschinese.apple.com/thread/254375758?answerId=258209717322&sortBy=best#258209717322)在`Library/Launch*`文件夹下寻找，没有找到
+* 内置麦克风无法使用：
+
+  * 尝试用 [AppleALC 驱动黑苹果声卡](https://www.imacosx.cn/7263.html) 的方案以及结合 [如何使用AppleALC修复音频](https://www.imaccn.com/707.html) 作为补充，没有解决。把`layout-id`​全部换了一遍^（最后停留在 24，虽然麦克风也无法使用，但是和 siri 说话它还是有不一样的反应）^，还是不行；然后把 AppleALC 和 AppleALCU 驱动都换成了最新版，也没有用
+  * 后来我想到在 Windows 系统下测试下麦克风^（查看声卡驱动的时候意识到麦克风有两个，英特尔智音和 Realtek 声卡，但是我测试发声只在英特尔智音驱动那边有效）^，后来发现大多都提到声卡带有[「英特尔智音」几乎无解](https://shaoxing.vercel.app/e779b52a.html#32-%E5%A3%B0%E5%8D%A1%E9%A9%B1%E5%8A%A8%E7%9B%B8%E5%85%B3:~:text=%E5%8D%A1%E9%A9%B1%E5%8A%A8%E9%97%AE%E9%A2%98-,%E6%B3%A8%EF%BC%9A%E8%8B%B1%E7%89%B9%E5%B0%94%E6%99%BA%E9%9F%B3%E6%8A%80%E6%9C%AF%E9%BA%A6%E5%85%8B%E9%A3%8E%E7%9B%AE%E5%89%8D%E6%97%A0%E8%A7%A3,-%E9%83%A8%E5%88%86%E4%B8%8D%E5%81%A5%E5%85%A8%E6%99%BA)，使用 VoodooHDA 驱动代替 AppleALC 的解决方案也缺少相关成功案例
+
+    * 有时间可以尝试 [联想小新Pro13解决黑苹果下麦克风不可用（曲线救国）](https://blog.csdn.net/PDragon_s/article/details/117373851)的方案，用外置耳机来解决
+* 某些 App 开机启动无效：
+
+  * Eul、KeyboardHolder 这两个 App 无法开启自启，使用腾讯柠檬清理来设置，也不行
+  * 尝试用终端控制来解决：[【Mac使用笔记】mac 设置开机自启动](https://blog.csdn.net/q664243624/article/details/126104960)，执行`launchctl load`命令出现错误，没有解决
+
+### 无解的问题
+
+* 隔空传送无法使用
+* 独立显卡无法使用
+
+## mac 软件
+
+* 日常必备：微信、微信输入法、思源、百度网盘、阿里云盘、腾讯柠檬清理、Input Source Pro、Snipaste、Notion、Chrome、Eudic（需要破解）、ClashX、Telegram、Karabiner
+* 工作必备：VS Code、FinalShell
+
+  * Navicat：[Navicat v16.2.9 最新版Mac安装与永久激活教程](https://mdnice.com/writing/9b9d77a556614ae799329acef35692ea)，压缩密码 3342。安装包已上传至 iCloud 云盘
+  * MySQL 8.0：[macOS 下的 MySQL 8.0.17 安装与简易配置](https://www.cnblogs.com/PowerTips/p/11366853.html)，在官网下载 MySQL 8.0.20 安装，过程很顺利，就是密码要 8 位数
+* 终端：wget、git、oh-my-zsh、node、pnpm、yarn
+
+  * Homebrew：
+
+    * [Mac安装Homebrew的正确姿势](https://www.jianshu.com/p/e0471aa6672d)：安装 Homebrew^(我使用的旧版 Ruby 版本，这个来源新的是用 Bash 重写了 )^，如果替换 `homebrew-core.git` 的时候提示没有目录^（但它会提示没有目录，也挺奇怪的，说明安装 Homebrew 之后就没有 core）^，就创建一个
+    * [Homebrew下载速度优化（已解决问题）](https://blog.csdn.net/CaptainDrake/article/details/129172826)：使用 ClashX 的终端代理功能，解决部分软件安装被墙的问题
+* mac 专属：
+
+  * Hackintool：可以修改硬盘挂载目录、查看全面的系统软硬件信息
+  * OpenCore Configurator（0.9.2 对应版本 2.70.0.0）：可以修改 OC 值
+  * [Maccy](https://github.com/p0deje/Maccy)：Swift 写的剪贴板软件，免费且开源
+  * [Eul](https://github.com/gao-sun/eul)：Swift 写的系统监控软件，免费且开源
+  * [Mos](https://github.com/Caldis/Mos)：解决鼠标滚动方向的问题，免费且开源
+  * [SubEthaEdit](https://github.com/subethaedit/SubEthaEdit)：可以实时协作的文本编辑器，免费且开源
+  * [KeyboardHolder](https://keyboardholder.leavesc.com/zh-cn/)：免费的输入法切换辅助工具，可以修改默认输入法，以及在各个 App 中定制习惯
+
+## 其他参考
+
+* [国光 台式机 202306 ](https://www.sqlsec.com/2023/06/2023pc.html)：使用最新的 OpenCore 0.9.2 引导，安装了最新的 macOS Ventura 13.4 系统
+* [Dell Inspiron 7590 黑苹果安装](https://zhuanlan.zhihu.com/p/117680791)：教你如何给灵越 7590 黑苹果抄作业
+* [黑苹果社区 装机时的图例](https://osx.cx/on-line-install-macos-ventura-beta.html)：OpenCore 引导在线安装黑苹果 macOS Ventura 13 教程
+* [黑果小兵解决问题教程](https://blog.daliansky.net/Common-problems-and-solutions-in-macOS-Ventura-13.0-installation.html)：macOS Ventura 13.0 安装中常见的问题及解决方法
+
+## 其他使用问题
+
+* Photos Library：
+
+  * 如果在`/Users/kangod/Pictures`中删除了`Photos Library`，会导致「照片」App 打不开。此时需要重新创建一个图库，并在「设置」中点击「用作系统照片图库」，指定「照片」App 默认打开的图库。然后 iCloud 会重新自动同步照片到本地图库
+* iCloud：
+
+  * iCloud 云盘选项「桌面与文稿文件夹」关闭之后，还是会自动同步本地的「桌面与文稿文件夹」，移动文稿数据到外部文件夹解决问题
+  * 开启 iCloud 同步之后点击「文稿」文件夹一直没反应，电脑重启解决问题
