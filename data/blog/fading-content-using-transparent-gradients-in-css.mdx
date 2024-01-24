@@ -1,0 +1,54 @@
+---
+title: 在 CSS 中使用透明渐变效果去淡化内容
+date: 2024-01-24
+draft: false
+tags: ["CSS","HTML"]
+summary: 我查看了 trunk.io 网站，最近我老是喜欢在优秀的网站上看到一些别样的 CSS，并剖析学习，相信以后有能用得上的地方
+---
+
+我查看了 [trunk.io](https://trunk.io) 网站，最近我老是喜欢在优秀的网站上看到一些别样的 CSS，并剖析学习，相信以后有能用得上的地方。如此，trunk.io 上有一个 CSS 特效还挺有意思的。
+
+它是对文本的淡入淡出效果，用于网站的某个部分，其中文本在底部淡入淡出，它看起来是这样的：
+
+![trunk-io-fading-content.png](https://qiniu.panlore.top/any/trunk-io-fading-content.png)
+
+我在其他地方也看到了类似的效果，我尝试用 CSS 来复制相同的效果。
+
+首先，我创建了一个 `div` 元素，其中包含一些文本。另外，我还在 `div` 元素内添加了一个 `span` 元素，用于创建淡入淡出效果。
+
+```
+<div class="box">
+    <span>Some text</span>
+    <span class="transparent_gradient"></span>
+</div>
+```
+
+然后，让内容在底部逐渐消失的技巧是使用一个透明的渐变层放在文字上方，这是其核心 CSS 的样子。
+
+```
+.box {
+    position: relative;
+}
+
+.transparent_gradient {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 13.0208333333vw;
+    background: linear-gradient(180deg, transparent 0, black 100%);
+}
+```
+
+如上所见，`transparent_gradient` 元素绝对位于 `box` 元素的底部，它有一个 `linear-gradient` 背景，顶部透明，底部黑色。
+
+可以调整渐变层的高度，使文字的淡出程度更大或更小。此外，还可以调整渐变层的第二个颜色，使文字淡出到任何想要的颜色。
+
+最终结果如下：
+
+<iframe height="300" width="100%" scrolling="no" title="Fading content using transparent gradient" src="https://codepen.io/KangodYan/embed/eYXGYmv?default-tab=result" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
+  See the Pen <a href="https://codepen.io/KangodYan/pen/eYXGYmv">
+  Fading content using transparent gradient</a> by Kangod (<a href="https://codepen.io/KangodYan">@KangodYan</a>)
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>

@@ -13,7 +13,7 @@ const ContentSecurityPolicy = `
   media-src *.panlore.top;
   connect-src *;
   font-src 'self';
-  frame-src giscus.app
+  frame-src giscus.app codepen.io ;
 `
 
 const securityHeaders = [
