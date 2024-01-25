@@ -6,7 +6,7 @@ tags: ["CSS","HTML"]
 summary: 我最近在 byline 上看到了一个很酷的摆动悬停动画，发现它很有意思，去研究了一下它的具体实现
 ---
 
-我看到的摆动悬停动画，如下图所示：
+我最近在 [byline](https://www.bylinebyline.com) 上看到了一个很酷的摆动悬停动画，发现它很有意思，去研究了一下它的具体实现，如下图所示：
 
 <video id="video" poster="https://qiniu.panlore.top/kd-blog/wiggly-animation.png" playsInline autoPlay loop muted>
     <source id="mp4" src="https://qiniu.panlore.top/kd-blog/wiggly-animation.mp4" type="video/mp4" />
@@ -38,6 +38,14 @@ button:hover {
 }
 ```
 
-如上所示，在按钮的 hover 状态上调用 wiggle 动画，wiggle 动画本质上是一个关键帧动画，它将按钮旋转一定角度，并在动画的一定百分比上平移一定数量的像素。
+如上所示，在按钮的 `hover` 状态上调用 `wiggle` 动画，`wiggle` 动画本质上是一个关键帧动画，它将按钮旋转一定角度，并在动画的一定百分比上平移一定数量的像素。
 
 我认为这种动画最适合想要引起用户注意的元素，在我看来，它肯定会吸引用户点击目标元素。
+
+我写的一个 CodePen 示例如下：
+
+<iframe height="300" width="100%" scrolling="no" title="Wiggly hover animation" src="https://codepen.io/KangodYan/embed/GReMRKz?default-tab=result" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
+  See the Pen <a href="https://codepen.io/KangodYan/pen/GReMRKz">
+  Wiggly hover animation</a> by Kangod (<a href="https://codepen.io/KangodYan">@KangodYan</a>)
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>

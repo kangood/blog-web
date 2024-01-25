@@ -96,7 +96,7 @@ summary: 通过两块硬盘隔离系统环境，一个是原本在使用的 Wind
 * macOS 睡眠模式
 
   * mac 电脑说是几乎可以不用关电脑，我的 Dell 电脑在睡眠模式下，偶尔风扇还会转的，后续放包里观察一下
-  * 睡眠模式下拨了电源，电池消耗挺多的，尝试用 [Mac 合盖掉电（休眠掉电）解决方法](https://zhuanlan.zhihu.com/p/294859171)，关闭了网络唤醒
+  * 睡眠模式下拨了电源，电池消耗挺多的，尝试用 [Mac 合盖掉电（休眠掉电）解决方法](https://zhuanlan.zhihu.com/p/294859171)，关闭了网络唤醒、修改了内存保留时间、睡眠模式等
 * macOS 卸载了某个 App 但系统设置中「允许在后台」还存在那个 App：[尝试](https://discussionschinese.apple.com/thread/254375758?answerId=258209717322&sortBy=best#258209717322)在`Library/Launch*`文件夹下寻找，没有找到
 
   * 有的是能找到的，比如`Razer_Synapse_Mac_Driver_v1.87.dmg`对应的 App，删除就没了；找不到的如：`KeyboardHolder`
@@ -124,37 +124,6 @@ summary: 通过两块硬盘隔离系统环境，一个是原本在使用的 Wind
 * 隔空传送无法使用（好像要换网卡才能解决）
 * NVIDIA 独立显卡无法使用（[NVIDIA 显卡硬件设计和 Apple 要求不符](https://blog.51cto.com/u_15875231/5889767)）
 
-## mac 软件
-
-* 日常必备：微信、微信输入法、思源、百度网盘、阿里云盘、腾讯柠檬清理、QQ、Snipaste、Obsidian、Notion、Chrome、Firefox、ClashX、Telegram
-
-  * Eudic：[欧路词典 Eudic 4.5.9.1141 破解版](https://www.digit77.com/macapps/eudic/)，快捷翻译单词，AI 引擎翻译写作
-  * ~~洛雪音乐助手：基于 Electron 的~~​~~[洛雪音乐助手](https://github.com/lyswhut/lx-music-desktop)~~​~~开源项目+~~​~~[六音自定义音源 v1.0.7](https://www.sixyin.com/8498.html)~~​ ~~，免费在线听歌、下载无损音乐。只适合下载音乐，在线听歌就是灾难~~
-  * 专注学习神曲：[【听歌向】第1秒就被前奏秒杀系列2.0【合集】](https://www.bilibili.com/video/BV12W411u7bc)
-* 工作必备：FinalShell
-
-  * Navicat：[Navicat v16.2.9 最新版Mac安装与永久激活教程](https://mdnice.com/writing/9b9d77a556614ae799329acef35692ea)，关注得压缩密码 3342。下载太慢，安装包已上传至 iCloud 云盘
-  * MySQL 8.0：[macOS 下的 MySQL 8.0.17 安装与简易配置](https://www.cnblogs.com/PowerTips/p/11366853.html)，在官网下载 MySQL 8.0.20 安装，过程很顺利，就是密码要 8 位数
-  * VS Code：[VSCode官方的配置同步方案](https://juejin.cn/post/7066622158184644621)，换设备了使用官网同步方案即可
-* 终端：wget、git、oh-my-zsh
-
-  * Homebrew：
-
-    * [Mac安装Homebrew的正确姿势](https://www.jianshu.com/p/e0471aa6672d)：安装 Homebrew^(我使用的旧版 Ruby 版本，这个来源新的是用 Bash 重写了 )^，如果替换 `homebrew-core.git` 的时候提示没有目录^（但它会提示没有目录，也挺奇怪的，说明安装 Homebrew 之后就没有 core）^，就创建一个
-    * [Homebrew下载速度优化（已解决问题）](https://blog.csdn.net/CaptainDrake/article/details/129172826)：使用 ClashX 的终端代理功能，解决部分软件安装被墙的问题
-* mac 专属
-
-  * [Hackintool](https://github.com/benbaker76/Hackintool)：Objective-C 写的，可以修改硬盘挂载目录、查看全面的系统软硬件信息，免费且开源
-  * [OpenCore Configurator](https://mackie100projects.altervista.org/opencore-configurator/)（0.9.2 对应版本 2.70.0.0）：可以修改 OC 值，免费但闭源
-  * [Maccy](https://github.com/p0deje/Maccy)：Swift 写的剪贴板软件，免费且开源
-  * [Eul](https://github.com/gao-sun/eul)：Swift 写的系统监控软件，免费且开源
-  * [Mos](https://github.com/Caldis/Mos)：Swift 写的鼠标滚动加持软件，免费且开源
-  * [SubEthaEdit](https://github.com/subethaedit/SubEthaEdit)：Objective-C 写的，可以实时协作的文本编辑器，免费且开源
-  * [Karabiner-Elements](https://github.com/pqrs-org/Karabiner-Elements)：C++ 写的，拥有强大的键盘自定义功能，可以在软件里修改系统级的快捷键，免费且开源
-  * [Input Source Pro](https://inputsource.pro/zh-CN)：公测期间免费，可以定制 App 和浏览器的输入习惯，以及修改默认输入法
-  * [IINA](https://github.com/iina/iina)：Swift 写的现代化视频播放器，免费且开源
-  * ~~[KeyboardHolder](https://keyboardholder.leavesc.com/zh-cn/)~~​ ~~：免费的输入法切换辅助工具，可以修改默认输入法，以及在各个 App 中定制习惯~~
-
 ## 其他使用问题
 
 * Photos Library
@@ -164,17 +133,21 @@ summary: 通过两块硬盘隔离系统环境，一个是原本在使用的 Wind
 
   * iCloud 云盘选项「桌面与文稿文件夹」关闭之后，还是会自动同步本地的「桌面与文稿文件夹」，移动文稿数据到外部文件夹解决问题
   * 开启 iCloud 同步之后点击「文稿」文件夹一直没反应，电脑重启解决问题
-* zsh 终端
+* Zsh Terminal
 
   * 终端运行提示`Operation not permitted`解决办法：
 
     * 在系统设置中，放开终端的完全磁盘访问权限。有一些可以了，但还有一些不行
     * 使用 [macOS 开启或关闭 SIP](https://sspai.com/post/55066) 的方法关闭 SIP 解决
-* 活动监视器
+* Active Monitor
 
-  * 聚焦 App 对应的`mds_stores`进程占用很高的 CPU 资源：
+  * Spotlight 对应的`mds_stores`进程占用很高的 CPU 资源：
 
-    * 尝试用 [相见恨晚的 Mac 技巧（二十三）](https://www.sohu.com/a/194320875_654244) 的方法重建聚焦的索引，完成重建之后暂时没什么问题
+    * 尝试用 [相见恨晚的 Mac 技巧（二十三）](https://www.sohu.com/a/194320875_654244) 的方法重建 Spotlight 的索引，完成重建之后暂时没什么问题
+  * Electron 开发环境下运行几次，cpu 资源占用就非常高，主要进程是 `coreservicesd` 和 `mds`
+
+    * 跟 Electron 没什么关系，不定时的出现这个问题，尝试关闭 Spotlight 的索引^（sudo mdutil -a -i off）^并删除对应数据^（sudo rm -rf /System/Volumes/Data/.Spotlight-V100/*）^试试
+    * 还有下次的话，试试这个：[coreservicesd/lssave keeps writing every 30s](https://stackoverflow.com/questions/9231402/coreservicesd-lssave-keeps-writing-every-30s)
 
 ## 其他参考
 
