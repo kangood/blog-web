@@ -54,16 +54,12 @@ summary: 通过两块硬盘隔离系统环境，一个是原本在使用的 Wind
 * chrome 右键需要双击才出现：关闭扩展程序鼠标手势`crxMouse`就好了
 * 键盘输入的问题
 
-  * 输入法大小写、中英文切换和 Windows 习惯不一样：使用微信输入法解决，而且它比原生的输入法用着更舒服、更顺手，细节更好
-  * 修改系统默认输入法、定制 App 输入习惯：~~使用~~ ~~[KeyboardHolder](https://keyboardholder.leavesc.com/zh-cn/)~~ ~~软件解决~~，换成了 [Input Source Pro](https://inputsource.pro/zh-CN) 更好用
+  * 之前在 Windows 都用的 QQ 输入法，它没有 Mac 版本，而且大小写、中英文切换和 Windows 习惯不一样：
+
+    * 使用微信输入法，用着还挺舒服的。但是切换输入法时无法及时键入中文（有延迟）、常用语无法前置、中英文切换提示不能关
+    * 尝试用[雾凇拼音](https://github.com/KangodYan/rime-ice)定制使用，不太习惯^（后面用着用着就习惯了，还可以）^。候选字不能多行、英文上屏不能自动加空格了、词库需要手动更新（雾凇的词库一直在更新还可以）
+  * 修改系统默认输入法、定制不同 App 的输入习惯：~~使用~~ ~~[KeyboardHolder](https://keyboardholder.leavesc.com/zh-cn/)~~ ~~软件解决~~，换成了 [Input Source Pro](https://inputsource.pro/zh-CN) 更好用
   * 使用不同输入法来切换中英文^（ABC 输入法作为纯英文输入，微信输入法作为中文输入）^：使用`shift`来回切换输入法，用 [Karabiner-Elements](https://github.com/pqrs-org/Karabiner-Elements?tab=readme-ov-file) 开源软件解决，参考了 [babyking](https://github.com/babyking/KarabinerConfiguration) 的配置文件
-  * 键盘上的 home 和 end 键作用改为行首和行尾：
-
-    * [macOS 通用的HOME和END键](https://jsrun.net/note/cjBpp)，使用这个方法，`home` 和 `end` 的移动没问题了，`shift+(home/end)`的组合还是不行
-    * 终极方法：
-
-      * 使用 Karabiner-Elements 把 `home` 替换成`ctrl+a`，`end` 替换成`ctrl+e`
-      * 继续用 Karabiner-Elements 把 `shift+home`替换成`ctrl+shift+a`，把 `shift+end`替换成`ctrl+shift+e`，完美解决
 * 鼠标输入的问题：Razer Pro Click Mini 雷蛇鼠标宏在 macOS 上的设置
 
   * 没有找到一个好的方案在 macOS 上修改我的鼠标宏，找到一个[开源项目](https://github.com/1kc/razer-macos)也没有支持我的鼠标设备，也没有支持 Ventura 系统
@@ -77,22 +73,26 @@ summary: 通过两块硬盘隔离系统环境，一个是原本在使用的 Wind
 * 蓝牙无法使用
 
   * 尝试用 [IntelBluetoothFirmware](https://github.com/OpenIntelWireless/IntelBluetoothFirmware) 开源方案^（我电脑的 USB ID 在这个项目的支持列表当中；故障排查中写的蓝牙 HCI 也是有的，后面有时间再看什么原因导致的。还有就是，EFI 中的这个 kext 和 github 上面版本是一样的）^，没有解决。还因为把 IntelBluetoothInjector.kext 一并放进去了导致进不了系统
-  * 尝试用 [这篇安装黑苹果强调顺序的文章](https://post.smzdm.com/p/arq4mpnx/)以及[Joseph-Hui 提供的方法](https://github.com/6923403/Dell-Inspiron-7590-Ventura/issues/1#issuecomment-1675960497)修改驱动顺序，没有解决^（先是删除驱动删错了，导致 wifi 连不上，然后因为来回换 EFI 导致 EFI 分区被莫名其妙占满，格式化之后引导也丢了）^。
-  * 成功使用上蓝牙：在以上修改顺序的基础上，再做了两个改动。一个是在 OCC 中删掉了 AirportBrcmFixup 相关的驱动，而不是像我之前做的只在 OCC 中关闭启用；第二个是把 BlueToolFixup.kext 升级到了 2.6.8，重启之后蓝牙可以正常打开/关闭，连接蓝牙耳机正常
+  * 尝试用 [这篇安装黑苹果强调顺序的文章](https://post.smzdm.com/p/arq4mpnx/)以及[Joseph-Hui 提供的方法](https://github.com/6923403/Dell-Inspiron-7590-Ventura/issues/1#issuecomment-1675960497)修改驱动顺序，没有解决^（先是删除驱动删错了，导致 wifi 连不上，然后因为来回换 EFI 导致 EFI 分区被莫名其妙占满，格式化之后引导也丢了）^
+  * 成功使用上蓝牙：在以上修改顺序的基础上，再做了两个改动^（一个是在 OCC 中删掉了 AirportBrcmFixup 相关的驱动，而不是像我之前做的只在 OCC 中关闭启用； 第二个是把 BlueToolFixup.kext 升级到了 2.6.8，重启之后蓝牙可以正常打开/关闭）^。修改之后连接蓝牙耳机正常
 
-* 键盘上的媒体播放按键失效
+* 数字小键盘未开机自启
 
-  * 尝试用 [BeardedSpice](https://github.com/beardedspice/beardedspice) 来解决，但是这个开源项目很久没更新了，在 chrome 中不生效
-  * 尝试用 [Beardie](https://github.com/Stillness-2/beardie) 来解决，即在 chrome 中用了它的扩展插件，也还是不生效，测试倒是能控制 Apple Music
-  * 播放的媒体，统一在顶部菜单栏的类似「音乐播放」的 icon 中有显示，可以控制所有打开的媒体，不用纠结快捷键了
+  * 尝试用 [DELL笔记本数字小键盘设置](https://blog.csdn.net/fdie100/article/details/6437052) 的方法在 BIOS 中修改 Keyboard NumLock 的选项，没有效果
+  * [使用 zsh 后HOME/END 键以及小键盘失效](https://blog.csdn.net/gatieme/article/details/104170950)：在 `~/.zshrc` 中重新映射小键盘的键位，就不用再按 `num lock` 键了
+* 锁屏 5 秒后会自动关闭屏幕，设置修改无效
+
+  * 修改设置「不活跃时关闭显示器」没有效果，可能这个针对的是未锁屏的情况下，已锁屏的情况下还未知如何修改
+  * 改变自己的行为习惯，「离开主动锁屏」改为「主动开启屏幕保护^（没有自带的系统级快捷键，需要使用「自动操作」App 新建「启动屏幕保护程序」的服务，然后在键盘快捷键「服务 - 通用」中设置快捷键）^」，使用 [Word Clock](https://github.com/simonheys/wordclock) 软件作为屏保软件
+
+* 某些 App 开机启动无效
+
+  * Eul、KeyboardHolder 这两个 App 无法开启自启，使用腾讯柠檬清理来设置，也不行
+  * 尝试用终端控制来解决：[【Mac使用笔记】mac 设置开机自启动](https://blog.csdn.net/q664243624/article/details/126104960)，执行`launchctl load`命令出现错误，没有解决
+  * 尝试用自建 plist 文件解决：[Mac自定义定时任务](https://imchenway.com/2021/02/24/Mac%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/#0-1-mac-zhong-ding-yi-ding-shi-ren-wu-de-ji-chong-fang-shi)，自建应用程序的 plist 文件，使用`launchctl load` 执行，开机自启成功
 
 ### 解决一半的问题
 
-* [禁止 macOS 更新]()
-
-  * [如何彻底禁止 macOS Ventura 自动更新，去除更新标记和通知](https://sysin.org/blog/disable-macos-ventura-update/#2-macOS-Ventura-%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E8%87%AA%E5%8A%A8%E6%9B%B4%E6%96%B0)。使用 hosts 屏蔽 macOS 更新地址，由于开启了系统代理失效了
-
-    * 清除了更新标记，~~不进入更新选项，应该就不会显示了~~，只是临时清除，重启几次之后会还原
 * macOS 睡眠模式
 
   * mac 电脑说是几乎可以不用关电脑，我的 Dell 电脑在睡眠模式下，偶尔风扇还会转的，后续放包里观察一下
@@ -105,13 +105,27 @@ summary: 通过两块硬盘隔离系统环境，一个是原本在使用的 Wind
   * 尝试用 [AppleALC 驱动黑苹果声卡](https://www.imacosx.cn/7263.html) 的方案以及结合 [如何使用AppleALC修复音频](https://www.imaccn.com/707.html) 作为补充，没有解决。把`layout-id`​全部换了一遍^（最后停留在 24，虽然麦克风也无法使用，但是和 siri 说话它还是有不一样的反应）^，还是不行；然后把 AppleALC 和 AppleALCU 驱动都换成了最新版，也没有用
   * 后来我想到在 Windows 系统下测试麦克风^（查看声卡驱动的时候意识到音频输入有两个：英特尔智音和 Realtek 声卡。但是我测试发声只在英特尔智音驱动那边有效）^，后来发现大多都提到声卡带有[「英特尔智音」几乎无解](https://shaoxing.vercel.app/e779b52a.html#32-%E5%A3%B0%E5%8D%A1%E9%A9%B1%E5%8A%A8%E7%9B%B8%E5%85%B3:~:text=%E5%8D%A1%E9%A9%B1%E5%8A%A8%E9%97%AE%E9%A2%98-,%E6%B3%A8%EF%BC%9A%E8%8B%B1%E7%89%B9%E5%B0%94%E6%99%BA%E9%9F%B3%E6%8A%80%E6%9C%AF%E9%BA%A6%E5%85%8B%E9%A3%8E%E7%9B%AE%E5%89%8D%E6%97%A0%E8%A7%A3,-%E9%83%A8%E5%88%86%E4%B8%8D%E5%81%A5%E5%85%A8%E6%99%BA)，使用 VoodooHDA 驱动代替 AppleALC 的解决方案也缺少「英特尔智音」相关的成功案例
   * 有时间可以尝试 [联想小新Pro13解决黑苹果下麦克风不可用（曲线救国）](https://blog.csdn.net/PDragon_s/article/details/117373851)的方案，用外置耳机来解决
-* 某些 App 开机启动无效
 
-  * Eul、KeyboardHolder 这两个 App 无法开启自启，使用腾讯柠檬清理来设置，也不行
-  * 尝试用终端控制来解决：[【Mac使用笔记】mac 设置开机自启动](https://blog.csdn.net/q664243624/article/details/126104960)，执行`launchctl load`命令出现错误，没有解决
-* 数字小键盘未开机自启
+### 已妥协的问题
 
-  * 尝试用 [DELL笔记本数字小键盘设置](https://blog.csdn.net/fdie100/article/details/6437052) 的方法在 BIOS 中修改 Keyboard NumLock 的选项，没有效果
+* 键盘上的 home 和 end 键作用改为行首和行尾：
+
+  * [macOS 通用的HOME和END键](https://jsrun.net/note/cjBpp)，使用这个方法，`home` 和 `end` 的移动没问题了，`shift+(home/end)`的组合还是不行
+  * 使用 Karabiner-Elements 把 `home` 替换成`ctrl+a`，`end` 替换成`ctrl+e`，解决了跳转行首和行尾
+  * 继续用 Karabiner-Elements 把 `shift+home` 替换成 `ctrl+shift+a`，把 `shift+end` 替换成 `ctrl+shift+e`，解决了选中+行首/行尾
+  * 尝试在 vim 命令下使用 `home` 和 `end` 代替 `shift+6` 和 `shift+4` 实现跳转行首和行尾无果^（主要是 home/end 已经改键为 ctrl+a/ctrl+e，bindkey 找不到后者在 vim 模式下的键位）^。那就只能习惯一下了，继续使用后者快捷键
+
+* 键盘上的媒体播放按键失效
+
+  * 尝试用 [BeardedSpice](https://github.com/beardedspice/beardedspice) 来解决，但是这个开源项目很久没更新了，在 chrome 中不生效
+  * 尝试用 [Beardie](https://github.com/Stillness-2/beardie) 来解决，即在 chrome 中用了它的扩展插件，也还是不生效，测试倒是能控制 Apple Music
+  * 播放的媒体，统一在顶部菜单栏的类似「音乐播放」的 icon 中有显示，可以控制所有打开的媒体，不用纠结快捷键了
+
+* 禁止 macOS 更新
+
+  * [如何彻底禁止 macOS Ventura 自动更新，去除更新标记和通知](https://sysin.org/blog/disable-macos-ventura-update/#2-macOS-Ventura-%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E8%87%AA%E5%8A%A8%E6%9B%B4%E6%96%B0)。使用 hosts 屏蔽 macOS 更新地址，由于开启了系统代理失效了
+
+    * 清除了更新标记，~~不进入更新选项，应该就不会显示了~~，只是临时清除，重启几次之后会还原。后来看标记久了也习惯了，不用管了
 
 ### 待解决的问题
 
@@ -144,10 +158,13 @@ summary: 通过两块硬盘隔离系统环境，一个是原本在使用的 Wind
   * Spotlight 对应的`mds_stores`进程占用很高的 CPU 资源：
 
     * 尝试用 [相见恨晚的 Mac 技巧（二十三）](https://www.sohu.com/a/194320875_654244) 的方法重建 Spotlight 的索引，完成重建之后暂时没什么问题
-  * Electron 开发环境下运行几次，cpu 资源占用就非常高，主要进程是 `coreservicesd` 和 `mds`
+  * cpu 资源占用经常突然变高，但通常是睡眠唤醒之后，主要进程是 `coreservicesd` 和 `mds`
 
-    * 跟 Electron 没什么关系，不定时的出现这个问题，尝试关闭 Spotlight 的索引^（sudo mdutil -a -i off）^并删除对应数据^（sudo rm -rf /System/Volumes/Data/.Spotlight-V100/*）^试试
+    * 不定时的出现这个问题，尝试关闭 Spotlight 的索引^（sudo mdutil -a -i off）^并删除对应数据^（sudo rm -rf /System/Volumes/Data/.Spotlight-V100/*）^试试
     * 还有下次的话，试试这个：[coreservicesd/lssave keeps writing every 30s](https://stackoverflow.com/questions/9231402/coreservicesd-lssave-keeps-writing-every-30s)
+  * 进程 `UVFSService` 占用 CPU 资源过高
+
+    * 排除掉 Spotlight 搜索 Windows 系统的文件：[是什么 UVFSService 以及为什么它使用大量 CPU 资源](https://zh-cn.ihowto.tips/task-manager-activity/what-is-uvfsservice-and-why-it-uses-high-cpu.html)
 
 ## 其他参考
 

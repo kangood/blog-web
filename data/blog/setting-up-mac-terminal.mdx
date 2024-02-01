@@ -1,0 +1,136 @@
+---
+title: 定制 Mac 终端的舒适体验
+date: 2024-02-01
+draft: false
+tags: ["Terminal","Oh-My-Zsh","iTerm2"]
+summary: 为 Web 开发设置 Mac 终端的小指南 - 推荐的插件、主题、字体等
+---
+
+<TOCInline toc={props.toc} topDepth={2} asDisclosure />
+
+当想要在一个全新的 macOS 中进行开发工作时，不可避免的需要设置一下终端（Terminal），为接下来的开发做好准备，以下为设置终端、插件、主题、字体等的过程。
+
+## Homebrew
+
+[Homebrew](https://docs.brew.sh) 是 macOS 的包管理器，类似于 Linux 下的 yum/apt-get。它是一个命令行工具，使用 install 指令安装软件。使用起来也很方便，很多常用软件都使用它来安装，可以通过在终端中运行以下命令来安装：
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+```
+
+在安装过程中，系统可能会提示安装 Xcode 命令行工具。如果还没安装，就按照提示进行安装。
+
+可能还会提示输入密码，因为 Homebrew 会被安装在 `/usr/local` 目录中，该目录受系统保护。
+
+安装后运行 `brew doctor`，以确保安装顺利完成。
+
+一些常用的 Homebrew 命令是：
+
+```bash
+brew install <package> # 安装 package
+brew uninstall <package> # 卸载 package
+brew update # 更新 Homebrew
+brew upgrade # 升级所有 package
+brew search <package> # 搜索一个 package
+brew list # 列出所有 package
+```
+
+## iTerm2
+
+接下来需要做的第一件事是安装 iTerm2。 iTerm2 是默认终端应用程序的替代品。
+
+它有很多很酷的功能，例如选项卡、分割窗格等等，可以从[这里](https://iterm2.com)下载它或使用 Homebrew 安装它：
+
+```bash
+brew install --cask iterm2
+```
+
+### 打开 iTerm2 的热键
+
+有时想要快速打开终端，但它可能在程序坞上，需要鼠标点一下才出来。可以设置一个热键，通过简单的快捷方式打开 iTerm2。
+
+通过设置项 `Settings > Keys > Hotkey > ☑️ Show/hide all windows with a system-wide hotkey` 来指定选择的热键，我使用了 `alt+~` 作为我的热键。
+
+## Oh My Zsh
+
+[Oh My Zsh](https://ohmyz.sh) 是 zsh 的一个框架，它带有许多有用的插件和主题，通过运行以下命令来安装它：
+
+```bash
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+
+编辑 `~/.zshrc` 文件配置 Oh My Zsh，运行以下命令来执行：
+
+```bash
+vim ~/.zshrc
+```
+
+如果一不小心把 `.zshrc` 文件内容弄乱了，可以通过运行 `cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc` 来恢复默认的 `oh-my-zsh` 配置。
+
+使用 Oh My Zsh 的好处是能够添加主题和插件。
+
+到目前为止，我最喜欢的主题是 [Powerlevel10k](https://github.com/romkatv/powerlevel10k)。该主题支持很多不同的图标，并且定制起来非常方便。使用以下命令来安装：
+
+```bash
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+```
+
+打开 `~/.zshrc` 文件并加入以下配置：
+
+```bash
+ZSH_THEME="powerlevel10k/powerlevel10k"
+POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
+```
+
+另外还需注意的是，要注释掉之前的主题配置 `ZSH_THEME`，不然有重复的配置它会读取第一个。
+
+最后执行 `source ~/.zshrc` 使配置生效。还可以运行 `p10k configure` 并按照提示操作来自定义主题，然后根据配置器的指导完成自定义主题。
+
+如果以后想更改它，可以再次运行 `p10k configure`。
+
+## Plugins
+
+Oh My Zsh 有很多可用的插件，可以在 [此处](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins) 找到所有插件的列表。在本文中，我将介绍我最常用的几个插件。
+
+### zsh-syntax-highlighting
+
+[zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting) 是一个语法高亮插件，可以在终端输入的时候突出显示命令。它的作用是可以发现拼写错误。通过运行以下命令来安装：
+
+```bash
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+```
+
+打开 `~/.zshrc` 文件并将 `zsh-syntax-highlighting` 添加到 `plugins` 数组中。
+
+```bash
+plugins=(
+	# other plugins...
+	zsh-syntax-highlighting
+)
+```
+
+执行 `source ~/.zshrc` 使配置生效。
+
+### zsh-autosuggestions
+
+[zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) 是一个终端的智能感知插件，它会根据历史记录给出建议输入的命令。运行以下命令来安装：
+
+```bash
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+```
+
+打开 ~/.zshrc 文件并将 zsh-autosuggestions 添加到 plugins 数组中。
+
+```bash
+plugins=(
+  # other plugins...
+  zsh-autosuggestions
+)
+```
+
+执行 `source ~/.zshrc` 使配置生效。
+
+zsh-autosuggestions 的使用参考 github 项目的主页说明：
+
+> 如果您在光标位于缓冲区末尾时按 <kbd>→</kbd> 键 (`forward-char` 小部件) 或 <kbd>End</kbd> (`end-of-line` 小部件)，它将接受建议，并用建议替换命令行缓冲区的内容。
+ 
