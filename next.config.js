@@ -66,6 +66,7 @@ module.exports = () => {
       dirs: ['app', 'components', 'layouts'],
     },
     images: {
+      unoptimized: true,
       domains: ['picsum.photos', 'panlore.top'],
       remotePatterns: [
         {
@@ -77,14 +78,15 @@ module.exports = () => {
     experimental: {
       appDir: true,
     },
-    async headers() {
-      return [
-        {
-          source: '/(.*)',
-          headers: securityHeaders,
-        },
-      ]
-    },
+    output: 'export',
+    // async  headers() {
+    //   return [
+    //     {
+    //       source: '/(.*)',
+    //       headers: securityHeaders,
+    //     },
+    //   ]
+    // },
     webpack: (config, options) => {
       config.module.rules.push({
         test: /\.svg$/,
