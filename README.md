@@ -1,4 +1,4 @@
-## Blog Web Next.js
+## Blog Web
 
 **特性**
 
@@ -18,7 +18,7 @@
 - 搜索面板：Kbar
 - 评论系统：Giscus
 
-**博客后台**：[Blog Admin React](https://github.com/KangodYan/blog-admin-react)
+**博客后台**：[Blog Admin](https://github.com/KangodYan/blog-admin)
 <br/>
 <br/>
-**后端 API**：[Blog Api NestJS](https://github.com/KangodYan/blog-api-nestjs)
+**后端 API**：[Blog Api](https://github.com/KangodYan/blog-api)
