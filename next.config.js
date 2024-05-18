@@ -10,7 +10,7 @@ const ContentSecurityPolicy = `
   script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is;
   style-src 'self' 'unsafe-inline';
   img-src * blob: data:;
-  media-src *.panlore.top;
+  media-src *.github.com;
   connect-src *;
   font-src 'self';
   frame-src giscus.app codepen.io ;
