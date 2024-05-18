@@ -10,7 +10,7 @@ const ContentSecurityPolicy = `
   script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is;
   style-src 'self' 'unsafe-inline';
   img-src * blob: data:;
-  media-src *.github.com;
+  media-src github.com raw.githubusercontent.com;
   connect-src *;
   font-src 'self';
   frame-src giscus.app codepen.io ;
@@ -66,7 +66,7 @@ module.exports = () => {
       dirs: ['app', 'components', 'layouts'],
     },
     images: {
-      domains: ['picsum.photos', 'panlore.top'],
+      domains: ['picsum.photos', 'github.com'],
       remotePatterns: [
         {
           protocol: 'https',
