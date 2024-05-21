@@ -15,6 +15,10 @@ export type TechStack =
   | 'ShadcnUI'
   | 'Vite'
   | 'AntDesign'
+  | 'ArcoDesign'
+  | 'Redux'
+  | 'Zustand'
+  | 'NestJS'
   | 'TanStackQuery'
 
 export const techStack: TechStack[] = [
@@ -34,5 +38,9 @@ export const techStack: TechStack[] = [
   'ShadcnUI',
   'Vite',
   'AntDesign',
+  'ArcoDesign',
+  'Redux',
+  'Zustand',
+  'NestJS',
   'TanStackQuery',
 ]
