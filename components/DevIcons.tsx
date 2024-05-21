@@ -1,5 +1,4 @@
 import { techStack } from '@/components/techStack'
-import Image from 'next/image'
 
 export function PythonIcon() {
   return (
@@ -764,15 +763,7 @@ export const Redux = () => {
 }
 
 export const Zustand = () => {
-  return (
-    <Image
-      src="/static/images/bear.png"
-      alt="bear"
-      width="22"
-      height="22"
-      className="rounded-none bg-white"
-    />
-  )
+  return <>🐻</>
 }
 
 export const NestJS = () => {
