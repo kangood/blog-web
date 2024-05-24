@@ -25,11 +25,21 @@ jobs:
 
       - name: Build Next.js app
         run: pnpm build
+
+      - name: Check pnpm and pm2 installation1
+        run: |
+          echo $(which pnpm)
+          echo $(which pm2)
         
       - name: Install pnpm and pm2
         run: |
           npm install -g pnpm
           npm install -g pm2
+
+      - name: Check pnpm and pm2 installation2
+        run: |
+          echo $(which pnpm)
+          echo $(which pm2)
     
       - name: Deploy to Custom Server
         uses: appleboy/ssh-action@master
@@ -38,6 +48,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
+            bash -l {0}
             cd /home/project/blog-web
             git pull origin master
             pnpm install --production
