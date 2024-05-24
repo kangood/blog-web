@@ -8,24 +8,29 @@ jobs:
     runs-on: ubuntu-latest # 构建环境使用 ubuntu
     steps:
       - name: Checkout code # 将代码拉到虚拟机
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
           
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.18.0'
+          node-version: 18
 
       - name: Setup pnpm 
-        uses: pnpm/action-setup@v2.0.1
+        uses: pnpm/action-setup@v3
         with:
-          version: 8.12.0
+          version: 8
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Build Next.js app
         run: pnpm build
-      
+
+      - name: Check pnpm and pm2 installation
+        run: |
+          echo $(which pnpm)
+          echo $(which pm2)
+          
       - name: Install pm2
         run: |
           npm install -g pm2
@@ -45,6 +50,6 @@ jobs:
             bash -l {0}
             cd /home/project/blog-web
             git pull origin master
-            /home/runner/setup-pnpm/node_modules/.bin/pnpm install --production
+            pnpm install --production
             /opt/hostedtoolcache/node/18.18.0/x64/bin/pm2 restart blog-web
             
