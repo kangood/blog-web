@@ -40,7 +40,8 @@ jobs:
           script: |
             PNPM_PATH=$(which pnpm)
             PM2_PATH=$(which pm2)
+            export PATH="$(dirname $PNPM_PATH):$(dirname $PM2_PATH):$PATH"
             cd /home/project/blog-web
             git pull origin master
-            $PNPM_PATH install --production
-            $PM2_PATH restart blog-web
+            pnpm install --production
+            pm2 restart blog-web
