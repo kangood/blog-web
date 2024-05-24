@@ -49,6 +49,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |      
+            exec bash \-l
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             npm --help
