@@ -40,7 +40,8 @@ jobs:
         run: |
           echo $(which pnpm)
           echo $(which pm2)
-    
+          echo $PATH
+          
       - name: Deploy to Custom Server
         uses: appleboy/ssh-action@master
         with:
@@ -51,6 +52,8 @@ jobs:
             echo $PATH
             npm install pnpm
             npm install pm2
+            echo "/home/runner/setup-pnpm/node_modules/.bin/pnpm" >> $GITHUB_PATH
+            echo "/opt/hostedtoolcache/node/18.20.2/x64/bin/pm2" >> $GITHUB_PATH
             echo $PATH
             cd /home/project/blog-web
             git pull origin master
