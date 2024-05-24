@@ -36,7 +36,7 @@ jobs:
             exec bash \-l
             cd /home/project/blog-web
             git pull origin master
-            pnpm install --production
+            pnpm install
             pnpm build
             pm2 restart blog-web
             
