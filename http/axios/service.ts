@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // 设置axios的额外配置
 export const service = axios.create({
-  baseURL: `http://127.0.0.1:6601/api`,
+  baseURL: `${process.env.SERVICE_BASE_URL}/api`,
 })
 // 拦截请求处理
 service.interceptors.request.use(async (params) => {

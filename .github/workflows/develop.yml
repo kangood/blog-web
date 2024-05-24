@@ -36,4 +36,4 @@ jobs:
             cd /home/project/blog-web
             git pull origin master
             pnpm install --production
-            pm2 restart app
+            pm2 restart blog-web
