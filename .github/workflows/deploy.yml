@@ -25,7 +25,12 @@ jobs:
 
       - name: Build Next.js app
         run: pnpm build
-
+        
+      - name: Check pnpm and pm2 installation
+        run: |
+          echo $(which pnpm)
+          echo $(which pm2)
+    
       - name: Deploy to Custom Server
         uses: appleboy/ssh-action@master
         with:
@@ -33,7 +38,9 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }} # 服务器用户名
           key: ${{ secrets.SERVER_SSH_KEY }} # 服务器SSH私钥
           script: |
+            PNPM_PATH=$(which pnpm)
+            PM2_PATH=$(which pm2)
             cd /home/project/blog-web
             git pull origin master
-            pnpm install --production
-            pm2 restart blog-web
+            $PNPM_PATH install --production
+            $PM2_PATH restart blog-web
