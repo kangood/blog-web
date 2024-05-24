@@ -25,18 +25,12 @@ jobs:
 
       - name: Build Next.js app
         run: pnpm build
-
-      - name: Check pnpm and pm2 installation1
+      
+      - name: Install pm2
         run: |
-          echo $(which pnpm)
-          echo $(which pm2)
-        
-      - name: Install pnpm and pm2
-        run: |
-          npm install -g pnpm
           npm install -g pm2
 
-      - name: Check pnpm and pm2 installation2
+      - name: Check pnpm and pm2 installation
         run: |
           echo $(which pnpm)
           echo $(which pm2)
@@ -51,5 +45,6 @@ jobs:
             bash -l {0}
             cd /home/project/blog-web
             git pull origin master
-            pnpm install --production
-            pm2 restart blog-web
+            /home/runner/setup-pnpm/node_modules/.bin/pnpm install --production
+            /opt/hostedtoolcache/node/18.18.0/x64/bin/pm2 restart blog-web
+            
