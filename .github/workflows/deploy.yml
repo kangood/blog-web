@@ -25,22 +25,6 @@ jobs:
 
       - name: Build Next.js app
         run: pnpm build
-
-      - name: Check pnpm and pm2 installation
-        run: |
-          echo $(which pnpm)
-          echo $(which pm2)
-          echo $PATH
-          
-      - name: Install pm2
-        run: |
-          npm install -g pm2
-
-      - name: Check pnpm and pm2 installation
-        run: |
-          echo $(which pnpm)
-          echo $(which pm2)
-          echo $PATH
           
       - name: Deploy to Custom Server
         uses: appleboy/ssh-action@master
