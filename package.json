@@ -7,6 +7,7 @@
     "dev": "cross-env next dev -p 6603",
     "build": "cross-env next build && cross-env NODE_OPTIONS='--experimental-json-modules' node ./scripts/postContentlayer.mjs",
     "serve": "next start -p 6603",
+    "pm2:prod": "pm2 start pnpm --name blog-web -- serve",
     "analyze": "cross-env ANALYZE=true next build",
     "lint": "next lint --fix --dir pages --dir app --dir components --dir lib --dir layouts"
   },
