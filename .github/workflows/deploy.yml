@@ -33,10 +33,6 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |      
-            exec bash \-l
             cd /home/project/blog-web
-            git pull origin master
-            pnpm install
-            pnpm build
-            pm2 restart blog-web
+            ./deploy.sh
             
