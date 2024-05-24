@@ -30,10 +30,17 @@ jobs:
         run: |
           echo $(which pnpm)
           echo $(which pm2)
+          echo $USER
+          echo $PATH
           
       - name: Install pm2
         run: |
           npm install -g pm2
+
+      - name: Add directory to PATH
+        run: |
+          echo "/home/runner/setup-pnpm/node_modules/.bin/pnpm" >> $GITHUB_PATH
+          echo "/opt/hostedtoolcache/node/18.20.2/x64/bin/pm2" >> $GITHUB_PATH
 
       - name: Check pnpm and pm2 installation
         run: |
@@ -46,10 +53,9 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            bash -l {0}
+          script: |            
             cd /home/project/blog-web
             git pull origin master
             pnpm install --production
-            /opt/hostedtoolcache/node/18.18.0/x64/bin/pm2 restart blog-web
+            pm2 restart blog-web
             
