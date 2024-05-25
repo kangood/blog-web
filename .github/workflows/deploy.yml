@@ -33,8 +33,9 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |      
-            which pnpm
-            echo $PATH
-            cd /home/project/blog-web
-            /usr/bin/zsh ./deploy.sh
+            git pull
+            /root/.node_modules/bin/pnpm install
+            /root/.node_modules/bin/pnpm build
+            /root/.node_modules/bin/pm2 restart blog-web
+
             
