@@ -33,7 +33,8 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |      
-            exec bash \-l
+            which pnpm
+            echo $PATH
             cd /home/project/blog-web
-            ./deploy.sh
+            /usr/bin/zsh ./deploy.sh
             
