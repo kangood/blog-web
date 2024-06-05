@@ -20,6 +20,8 @@ export type TechStack =
   | 'Zustand'
   | 'NestJS'
   | 'TanStackQuery'
+  | 'Contentlayer'
+  | 'Giscus'
 
 export const techStack: TechStack[] = [
   'TypeScript',
@@ -43,4 +45,6 @@ export const techStack: TechStack[] = [
   'Zustand',
   'NestJS',
   'TanStackQuery',
+  'Contentlayer',
+  'Giscus',
 ]
