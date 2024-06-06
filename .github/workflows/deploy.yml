@@ -33,8 +33,8 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |     
-            cd /home/project/blog-web 
-            git pull
+            cd /home/project/blog-web
+            git pull origin master --force
             /root/.node_modules/bin/pnpm install
             /root/.node_modules/bin/pnpm build
             /root/.node_modules/bin/pm2 restart blog-web
