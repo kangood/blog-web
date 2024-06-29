@@ -18,7 +18,7 @@
 - 搜索面板：Kbar
 - 评论系统：Giscus
 
-**博客后台**：[Blog Admin](https://github.com/KangodYan/blog-admin)
+**博客后台**：[Blog Admin](https://github.com/kangood/blog-admin)
 <br/>
 <br/>
-**后端 API**：[Blog Api](https://github.com/KangodYan/blog-api)
+**后端 API**：[Blog Api](https://github.com/kangood/blog-api)
